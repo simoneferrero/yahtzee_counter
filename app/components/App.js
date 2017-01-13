@@ -1,73 +1,99 @@
 var React = require('react');
+var Jumbotron = require('./display/Jumbotron');
+var TempName = require('./display/tempName');
+var FirstPart = require('./display/FirstPart');
 
 var App = React.createClass({
   getInitialState: function() {
     return {
       players: [
-        //  testPlayer: {
-        //     name: 'testPlayer',
-        //     ones: '',
-        //     twos: '',
-        //     threes: '',
-        //     fours: '',
-        //     fives: '',
-        //     sixes: '',
-        //     firstPartSum: 0
-        //   }
-        // }
-      ]
+      //  {
+      //     name: 'testPlayer',
+      //     ones: '',
+      //     twos: '',
+      //     threes: '',
+      //     fours: '',
+      //     fives: '',
+      //     sixes: '',
+      //     firstPartSum: 0
+      //   }
+      ],
+      columnSizes: [
+        "col-xs-10",
+        "col-xs-5",
+        "col-xs-5 col-sm-3",
+        "col-xs-5 col-sm-3 col-md-2"
+      ],
+      chosenColumnSize: ''
     };
+  },
+
+  //this must be refactored, it's just an idea
+  sumFirstPartPoints: function(player) {
+    var pointsArray = [player.ones, player.twos, player.threes, player.fours, player.fives, player.sixes];
+    var pointsSum = 0;
+
+    pointsArray.forEach(function(item, index) {
+      if (item >= 0) {
+        pointsSum += item
+      }
+    });
+
+    console.log(pointsArray);
+    console.log(pointsSum);
+
+    return pointsSum;
   },
 
   addNewPlayer: function(event) {
     event.preventDefault();
     var playerName = $("#newPlayer").val();
     var player = {
-      name: playerName
+      name: playerName,
+      ones: -1,
+      twos: -1,
+      threes: -1,
+      fours: -1,
+      fives: -1,
+      sixes: -1,
+      firstPartSum: 0
     };
     this.setState({
       players: this.state.players.concat(player)
     });
     $("#newPlayer").val('').focus();
+    player.firstPartSum = this.sumFirstPartPoints(player);
+    //all this code will not work, it's just to understand
+    //the event is not this, it is when user updates points
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    var playersLength = this.state.players.length;
+    var columnSizes = this.state.columnSizes;
+
+    if (playersLength !== prevState.players.length) {
+      var chosenColumnSize = '';
+      if (playersLength === 1) {
+        chosenColumnSize = columnSizes[0];
+      } else if (playersLength === 2) {
+        chosenColumnSize = columnSizes[1];
+      } else if (playersLength >= 3 && playersLength <= 4) {
+        chosenColumnSize = columnSizes[2];
+      } else if (playersLength > 4) {
+        chosenColumnSize = columnSizes[3];
+      }
+      this.setState({
+        chosenColumnSize: chosenColumnSize + " container text-center"
+      });
+    }
   },
 
   render: function() {
-    var jumbotron = (
-      <div className="jumbotron">
-        <div className="container">
-          <div className="Row">
-            <h1 className="col-xs-12 text-center">Yahtzee!!<br /><small>The easy way to count Yahtzee points</small></h1>
-          </div>
-        </div>
-        <form className="form-inline">
-          <div className="container">
-            <div className="Row">
-              <label htmlFor="addNewPlayer"
-                className="col-xs-2">Add new player:</label>
-              <input id="newPlayer" type="text" name="newPlayer" placeholder="Player name"
-                className="col-xs-5 col-xs-offset-1" />
-              <button id="addMe" onClick={this.addNewPlayer}
-                 className="btn btn-primary col-xs-3 col-xs-offset-1">Add me!</button>
-            </div>
-          </div>
-        </form>
-        <div>{this.state.players.map(function(player) {return player.name + ' ';})}</div>
-      </div>
-    );
-
-    var firstPartPoints = (
-      <div className="container">
-        <div className="Row">
-          {/* add column for point description (1s, 2s, etc.) with size col-xs-2
-            loop over number of players and create 1 column for each
-            if 1 player, col-xs-10
-            if 2 players, col-xs-5
-            if 3/4 players, col-xs-5 col-sm-3
-            if >5 players, col-xs-5 col-sm-3 col-md-2  */}
-        </div>
-      </div>
-    );
-    return jumbotron;
+    return <div>{([
+      <Jumbotron onClick={this.addNewPlayer} />,
+      // <TempName tempName={this.state.players} />,
+      <FirstPart chosenColumnSize={this.state.chosenColumnSize} />
+    ])}</div>
   }
 });
 
