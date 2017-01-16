@@ -2,19 +2,18 @@ var React = require('react');
 
 var PointsHeaders = React.createClass({
   render: function() {
-    var pointsHeaders = (
-      <div className="col-xs-2 pointsHeaders">
-        <div className="Row">Name</div>
-        <div className="Row">1s</div>
-        <div className="Row">2s</div>
-        <div className="Row">3s</div>
-        <div className="Row">4s</div>
-        <div className="Row">5s</div>
-        <div className="Row">6s</div>
+    var pointsHeaders = [];
+
+    for (var i = 1; i <= 6; i++) {
+      pointsHeaders.push(<div className={"Row points" + i} key={i}>{i}s</div>);
+    }
+
+    return (
+      <div className="col-xs-1 pointsHeaders">
+        <div className="Row pointsName" key="name">Name</div>
+        {pointsHeaders}
       </div>
     );
-
-    return pointsHeaders;
   }
 });
 

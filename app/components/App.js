@@ -6,8 +6,10 @@ var FirstPart = require('./display/FirstPart');
 var App = React.createClass({
   getInitialState: function() {
     return {
+      playerId: 1,
       players: [
       //  {
+      //     key: 0,
       //     name: 'testPlayer',
       //     ones: '',
       //     twos: '',
@@ -19,10 +21,11 @@ var App = React.createClass({
       //   }
       ],
       columnSizes: [
-        "col-xs-10",
-        "col-xs-5",
-        "col-xs-5 col-sm-3",
-        "col-xs-5 col-sm-3 col-md-2"
+        "col-xs-12",
+        "col-xs-6",
+        "col-xs-6 col-sm-4",
+        "col-xs-6 col-sm-3",
+        "col-xs-6 col-sm-3 col-md-2"
       ],
       chosenColumnSize: ''
     };
@@ -49,6 +52,7 @@ var App = React.createClass({
     event.preventDefault();
     var playerName = $("#newPlayer").val();
     var player = {
+      key: this.state.playerId,
       name: playerName,
       ones: -1,
       twos: -1,
@@ -59,7 +63,8 @@ var App = React.createClass({
       firstPartSum: 0
     };
     this.setState({
-      players: this.state.players.concat(player)
+      players: this.state.players.concat(player),
+      playerId: this.state.playerId + 1
     });
     $("#newPlayer").val('').focus();
     player.firstPartSum = this.sumFirstPartPoints(player);
@@ -73,15 +78,19 @@ var App = React.createClass({
 
     if (playersLength !== prevState.players.length) {
       var chosenColumnSize = '';
+
       if (playersLength === 1) {
         chosenColumnSize = columnSizes[0];
       } else if (playersLength === 2) {
         chosenColumnSize = columnSizes[1];
-      } else if (playersLength >= 3 && playersLength <= 4) {
+      } else if (playersLength === 3) {
         chosenColumnSize = columnSizes[2];
-      } else if (playersLength > 4) {
+      } else if (playersLength === 4) {
         chosenColumnSize = columnSizes[3];
+      } else if (playersLength > 4) {
+        chosenColumnSize = columnSizes[4];
       }
+      
       this.setState({
         chosenColumnSize: chosenColumnSize + " container text-center"
       });
@@ -92,7 +101,7 @@ var App = React.createClass({
     return <div>{([
       <Jumbotron onClick={this.addNewPlayer} />,
       // <TempName tempName={this.state.players} />,
-      <FirstPart chosenColumnSize={this.state.chosenColumnSize} />
+      <FirstPart chosenColumnSize={this.state.chosenColumnSize} players={this.state.players} />
     ])}</div>
   }
 });
