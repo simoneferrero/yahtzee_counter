@@ -72,6 +72,11 @@ var App = React.createClass({
     //the event is not this, it is when user updates points
   },
 
+  changePoints: function(e) {
+    var playerKey = e.target.key;
+    var number = e.target.className;
+  },
+
   componentDidUpdate: function(prevProps, prevState) {
     var playersLength = this.state.players.length;
     var columnSizes = this.state.columnSizes;
@@ -90,7 +95,7 @@ var App = React.createClass({
       } else if (playersLength > 4) {
         chosenColumnSize = columnSizes[4];
       }
-      
+
       this.setState({
         chosenColumnSize: chosenColumnSize + " container text-center"
       });

@@ -30,42 +30,24 @@ var FirstPartPoints = React.createClass({
 
       firstPartPoints.push(
         <div className="Row" key={i + "s"}>
-          <div className="col-xs-8">Temp space for form</div>
+          {/* <label className="col-xs-4" htmlFor={i + "s"}>{i + "s"}</label> */}
+          <div className="col-xs-8"><input className={playerData.key + " " + i + "s col-xs-12"} type="number" name={i + "s"}
+            placeholder={i}></input></div>
           <div className="col-xs-4">{playerData[identifier]}</div>
         </div>
       );
     }
-      // <div className="Row">
-      //   <div className="col-xs-8">Temp space for form</div>
-        /* each of these temp must have an onClick function set in the main app.js controller,
+    /*each of these temp must have an onClick function set in the main app.js controller,
           it is the same principle as Jumbotron
-          the challenge is to create a custom function for each of those->use parameters wisely */
-      //   <div className="col-xs-4">{playerData.ones}</div>
-      // </div>
-      // <div className="Row">
-      //   <div className="col-xs-8">Temp space for form</div>
-      //   <div className="col-xs-4">{playerData.twos}</div>
-      // </div>
-      // <div className="Row">
-      //   <div className="col-xs-8">Temp space for form</div>
-      //   <div className="col-xs-4">{playerData.threes}</div>
-      // </div>
-      // <div className="Row">
-      //   <div className="col-xs-8">Temp space for form</div>
-      //   <div className="col-xs-4">{playerData.fours}</div>
-      // </div>
-      // <div className="Row">
-      //   <div className="col-xs-8">Temp space for form</div>
-      //   <div className="col-xs-4">{playerData.fives}</div>
-      // </div>
-      // <div className="Row">
-      //   <div className="col-xs-8">Temp space for form</div>
-      //   <div className="col-xs-4">{playerData.sixes}</div>
-      // </div>
+          the challenge is to create a custom function for each of those->use parameters wisely*/
 
     return (
       <div className={this.props.chosenColumnSize}>
         <div className="Row">{playerData.name}</div>
+        <div className="Row" key={i + "s"}>
+          <div className="col-xs-8"># of dice</div>
+          <div className="col-xs-4">Points</div>
+        </div>
         {firstPartPoints}
       </div>
     );
