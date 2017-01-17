@@ -4,6 +4,11 @@ var FirstPartPoints = React.createClass({
   render: function() {
     var playerData = this.props.player;
     var firstPartPoints = [];
+    var options = [<option value="-1">--</option>];
+    for (var j = 0; j <= 5; j++) {
+      options.push(<option value={j}>{j}</option>);
+    }
+
     for (var i = 1; i <= 6; i++) {
       var identifier = '';
       switch (i) {
@@ -30,10 +35,15 @@ var FirstPartPoints = React.createClass({
 
       firstPartPoints.push(
         <div className="Row" key={i + "s"}>
+          <div className="col-xs-2">{i}
+          </div>
           {/* <label className="col-xs-4" htmlFor={i + "s"}>{i + "s"}</label> */}
-          <div className="col-xs-8"><input className={playerData.key + " " + i + "s col-xs-12"} type="number" name={i + "s"}
-            placeholder={i}></input></div>
-          <div className="col-xs-4">{playerData[identifier]}</div>
+          {/* <div className="col-xs-7"> */}
+            <select className={playerData.key + " " + i + "s col-xs-6"} name={i + "s"} defaultValue="-1">
+              {options}
+            </select>
+          {/* </div> */}
+          <div className="col-xs-3">{playerData[identifier]}</div>
         </div>
       );
     }
@@ -45,8 +55,8 @@ var FirstPartPoints = React.createClass({
       <div className={this.props.chosenColumnSize}>
         <div className="Row">{playerData.name}</div>
         <div className="Row" key={i + "s"}>
-          <div className="col-xs-8"># of dice</div>
-          <div className="col-xs-4">Points</div>
+          <div className="col-xs-6 col-xs-offset-2">Dice</div>
+          <div className="col-xs-3">Points</div>
         </div>
         {firstPartPoints}
       </div>

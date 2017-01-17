@@ -62,10 +62,13 @@ var App = React.createClass({
       sixes: -1,
       firstPartSum: 0
     };
-    this.setState({
-      players: this.state.players.concat(player),
-      playerId: this.state.playerId + 1
-    });
+    if (playerName !== "") {
+      this.setState({
+        players: this.state.players.concat(player),
+        playerId: this.state.playerId + 1
+      });
+    }
+
     $("#newPlayer").val('').focus();
     player.firstPartSum = this.sumFirstPartPoints(player);
     //all this code will not work, it's just to understand
