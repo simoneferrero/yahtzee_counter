@@ -11,12 +11,12 @@ var App = React.createClass({
       //  {
       //     key: 0,
       //     name: 'testPlayer',
-      //     ones: '',
-      //     twos: '',
-      //     threes: '',
-      //     fours: '',
-      //     fives: '',
-      //     sixes: '',
+      //     s1: '',
+      //     s2: '',
+      //     s3: '',
+      //     s4: '',
+      //     s5: '',
+      //     s6: '',
       //     firstPartSum: 0
       //   }
       ],
@@ -33,12 +33,12 @@ var App = React.createClass({
 
   //this must be refactored, it's just an idea
   sumFirstPartPoints: function(player) {
-    var pointsArray = [player.ones, player.twos, player.threes, player.fours, player.fives, player.sixes];
+    var pointsArray = [player.s1, player.s2, player.s3, player.s4, player.s5, player.s6];
     var pointsSum = 0;
 
     pointsArray.forEach(function(item, index) {
       if (item >= 0) {
-        pointsSum += item
+        pointsSum += item;
       }
     });
 
@@ -67,9 +67,6 @@ var App = React.createClass({
     }
 
     $("#newPlayer").val('').focus();
-    player.firstPartSum = this.sumFirstPartPoints(player);
-    //all this code will not work, it's just to understand
-    //the event is not this, it is when user updates points
   },
 
   changePoints: function(e) {
@@ -82,14 +79,14 @@ var App = React.createClass({
     for (var i = 0; i < players.length; i++) {
       if (playerKey == players[i].key) {
         players[i][numberKey] = inputValue * numValue;
+        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
       }
     }
     this.setState({
       players: players
     });
-    console.log(playerKey + " " + numberKey + " " + inputValue);
+    // console.log(playerKey + " " + numberKey + " " + inputValue);
     console.log(this.state.players);
-    console.log(players);
   },
 
   componentDidUpdate: function(prevProps, prevState) {

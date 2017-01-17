@@ -41,7 +41,7 @@ var FirstPartPoints = React.createClass({
               onChange={onChange}>
               {options}
             </select>
-          <div className="col-xs-3" key="result">{playerData[identifier] < 0 ? "--" : playerData[identifier]}</div>
+          <div className="col-xs-3" key="result">{playerData[identifier] < 0 ? "-" : playerData[identifier]}</div>
         </div>
       );
     }
@@ -49,11 +49,16 @@ var FirstPartPoints = React.createClass({
     return (
       <div className={this.props.chosenColumnSize}>
         <div className="Row" key="name">{playerData.name}</div>
-        <div className="Row" key={i + "s"}>
+        {/* <div className="Row" key="headers">
           <div className="col-xs-6 col-xs-offset-2">Dice</div>
           <div className="col-xs-3">Points</div>
-        </div>
+        </div> */}
         {firstPartPoints}
+        <div className="Row" key="firstPartPoints">
+          {/* <div className="col-xs=6 col-xs-offset-2">First Part Points</div> */}
+          <div className="col-xs-6 col-xs-offset-2">Subtot:</div>
+          <div className="col-xs-3">{playerData.firstPartSum}</div>
+        </div>
       </div>
     );
   }
