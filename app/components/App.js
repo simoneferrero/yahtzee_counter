@@ -42,9 +42,6 @@ var App = React.createClass({
       }
     });
 
-    console.log(pointsArray);
-    console.log(pointsSum);
-
     return pointsSum;
   },
 
@@ -54,12 +51,12 @@ var App = React.createClass({
     var player = {
       key: this.state.playerId,
       name: playerName,
-      ones: -1,
-      twos: -1,
-      threes: -1,
-      fours: -1,
-      fives: -1,
-      sixes: -1,
+      s1: -1,
+      s2: -1,
+      s3: -1,
+      s4: -1,
+      s5: -1,
+      s6: -1,
       firstPartSum: 0
     };
     if (playerName !== "") {
@@ -76,8 +73,23 @@ var App = React.createClass({
   },
 
   changePoints: function(e) {
-    var playerKey = e.target.key;
-    var number = e.target.className;
+    var playerKey = e.target.className.split(" ")[0];
+    var numValue = e.target.className.split(" ")[1];
+    var numberKey = "s" + numValue;
+    var inputValue = parseInt(e.target.value);
+    var players = this.state.players;
+
+    for (var i = 0; i < players.length; i++) {
+      if (playerKey == players[i].key) {
+        players[i][numberKey] = inputValue * numValue;
+      }
+    }
+    this.setState({
+      players: players
+    });
+    console.log(playerKey + " " + numberKey + " " + inputValue);
+    console.log(this.state.players);
+    console.log(players);
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -107,9 +119,9 @@ var App = React.createClass({
 
   render: function() {
     return <div>{([
-      <Jumbotron onClick={this.addNewPlayer} />,
+      <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />,
       // <TempName tempName={this.state.players} />,
-      <FirstPart chosenColumnSize={this.state.chosenColumnSize} players={this.state.players} />
+      <FirstPart key="firstPart" chosenColumnSize={this.state.chosenColumnSize} players={this.state.players} onChange={this.changePoints} />
     ])}</div>
   }
 });
