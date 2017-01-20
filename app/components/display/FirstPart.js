@@ -15,7 +15,7 @@ var FirstPart = React.createClass({
 
     var firstPartPoints = (
       <div className="container">
-        <div className="Row">
+        <div className="row">
           {playersPoints.length != 0 ? playersPoints : null}
         </div>
       </div>

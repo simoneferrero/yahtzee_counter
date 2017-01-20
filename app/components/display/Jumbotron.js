@@ -5,13 +5,13 @@ var Jumbotron = React.createClass({
     var jumbotron = (
       <div className="jumbotron">
         <div className="container">
-          <div className="Row">
+          <div className="row">
             <h1 className="col-xs-12 text-center">Yahtzee!!<br /><small>The easy way to count Yahtzee points</small></h1>
           </div>
         </div>
         <form className="form-inline">
           <div className="container">
-            <div className="Row">
+            <div className="row">
               <label htmlFor="addNewPlayer"
                 className="col-xs-2">Add new player:</label>
               <input id="newPlayer" type="text" name="newPlayer" placeholder="Player name"
