@@ -69,24 +69,30 @@ var App = React.createClass({
     $("#newPlayer").val('').focus();
   },
 
-  changePoints: function(e) {
-    var playerKey = e.target.className.split(" ")[0];
-    var numValue = e.target.className.split(" ")[1];
-    var numberKey = "s" + numValue;
-    var inputValue = parseInt(e.target.value);
+  onDieClick: function(e) {
     var players = this.state.players;
+    var dieInfo = e.target.className.split(" ")[1].split("_");
+
+    var numberOfDice = parseInt(dieInfo[0]);
+    var dieFace = dieInfo[1];
+    var dieFaceIndex = "s" + dieInfo[1];
+    var player = dieInfo[2];
 
     for (var i = 0; i < players.length; i++) {
-      if (playerKey == players[i].key) {
-        players[i][numberKey] = inputValue * numValue;
+      if (player == players[i].key) {
+        players[i][dieFaceIndex] = numberOfDice * dieFace;
         players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
       }
     }
+
+    $("." + dieFace + "_" + player).css(
+      "opacity": 0
+    ); //NOT WORKING: REMOVE ALL PREVIOUS STYLING
+    e.target.style.opacity = 0.5;
+
     this.setState({
       players: players
     });
-    // console.log(playerKey + " " + numberKey + " " + inputValue);
-    console.log(this.state.players);
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -118,7 +124,7 @@ var App = React.createClass({
     return <div>{([
       <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />,
       // <TempName tempName={this.state.players} />,
-      <FirstPart key="firstPart" chosenColumnSize={this.state.chosenColumnSize} players={this.state.players} onChange={this.changePoints} />
+      <FirstPart key="firstPart" chosenColumnSize={this.state.chosenColumnSize} players={this.state.players} onDieClick={this.onDieClick} />
     ])}</div>
   }
 });

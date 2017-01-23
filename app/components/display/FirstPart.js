@@ -6,11 +6,11 @@ var FirstPart = React.createClass({
   render: function() {
     var players = this.props.players;
     var playersPoints = [];
-    var onChange = this.props.onChange;
+    var onDieClick = this.props.onDieClick;
     var chosenColumnSize = this.props.chosenColumnSize;
 
     playersPoints = players.map(function(player) {
-      return <FirstPartPoints chosenColumnSize={chosenColumnSize} playerData={player} key={player.key} onChange={onChange} />;
+      return <FirstPartPoints chosenColumnSize={chosenColumnSize} playerData={player} key={player.key} onDieClick={onDieClick} />;
     });
 
     var firstPartPoints = (

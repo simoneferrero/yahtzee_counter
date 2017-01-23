@@ -6,12 +6,32 @@
   margin: 0 auto;
 }
 
+.die:hover {
+  cursor: pointer;
+}
+
+.dieCover {
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  z-index: 999;
+  background-color: red;
+  opacity: 0;
+  margin-left: -1px;
+  margin-top: -1px;
+}
+
 .dieDot {
   height: 4px;
   width: 4px;
   border-radius: 100%;
   background-color: black;
   position: absolute;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .dieDot1 {
@@ -65,4 +85,9 @@
   -ms-transform: rotate(45deg); /* IE 9 */
   -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
   transform: rotate(45deg);
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }

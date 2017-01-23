@@ -5,6 +5,7 @@ var Die = React.createClass({
     var numberOfDice = this.props.numberOfDice; //this is the number of dice between 0 and 5 within the row
     var dieFace = this.props.dieFace; //this is the face of the die between 1 and 6 for one player
     var player = this.props.player; //this is the player id (key) among all players
+    var onClick = this.props.onClick;
     var dieFacesArray = [
       [0],//no dot-cross
       [4, 5, 6],//top-left
@@ -26,6 +27,7 @@ var Die = React.createClass({
 
     var die = (<div className={"die " + numberOfDice + '_' + dieFace + '_' + player}>
       {dots}
+      <div className={"dieCover " + numberOfDice + '_' + dieFace + '_' + player + " " + dieFace + '_' + player}  onClick={onClick}></div>
     </div>);
 
     return die;

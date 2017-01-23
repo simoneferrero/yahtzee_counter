@@ -5,7 +5,7 @@ var FirstPartPoints = React.createClass({
   render: function() {
     var playerData = this.props.playerData;
     var player = playerData.key;
-    var onChange = this.props.onChange;
+    var onDieClick = this.props.onDieClick;
     var firstPartPoints = [];
 
     for (var i = 1; i <= 6; i++) {
@@ -13,7 +13,7 @@ var FirstPartPoints = React.createClass({
 
       firstPartPoints.push(
         <div className="row" key={i} style={{marginBottom: 10}}>
-          <DiceRow dieFace={i} player={player} key={i + '_' + player} />
+          <DiceRow dieFace={i} player={player} key={i + '_' + player} onDieClick={onDieClick} />
           <div className="col-xs-3" key="result">{playerData[identifier] < 0 ? "-" : playerData[identifier]}</div>
         </div>
       );
