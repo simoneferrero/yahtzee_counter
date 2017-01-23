@@ -1,8 +1,11 @@
 var React = require('react');
 
 var Die = React.createClass({
-  getInitialState: function() {
-    return {
+  render: function() {
+    var dieFaces = {
+      none: [
+        <div className="dieCross" key="dieCross"></div>
+      ],
       die1: [
         <div className="dieDot dieDot7" key="dot7"></div>
       ],
@@ -35,36 +38,31 @@ var Die = React.createClass({
         <div className="dieDot dieDot4" key="dot4"></div>,
         <div className="dieDot dieDot5" key="dot5"></div>,
         <div className="dieDot dieDot6" key="dot6"></div>
-      ],
-      none: [
-        <div className="dieCross" key="dieCross"></div>
       ]
-    }
-  },
+    };
 
-  render: function() {
     var dots = [];
     switch (this.props.dieFace.toString()) {
       case "0":
-        dots.push(this.state.none);
+        dots.push(dieFaces.none);
         break;
       case "1":
-        dots.push(this.state.die1);
+        dots.push(dieFaces.die1);
         break;
       case "2":
-        dots.push(this.state.die2);
+        dots.push(dieFaces.die2);
         break;
       case "3":
-        dots.push(this.state.die3);
+        dots.push(dieFaces.die3);
         break;
       case "4":
-        dots.push(this.state.die4);
+        dots.push(dieFaces.die4);
         break;
       case "5":
-        dots.push(this.state.die5);
+        dots.push(dieFaces.die5);
         break;
       case "6":
-        dots.push(this.state.die6);
+        dots.push(dieFaces.die6);
         break;
       default:
         break;
