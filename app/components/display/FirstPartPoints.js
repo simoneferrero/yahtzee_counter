@@ -5,6 +5,8 @@ var FirstPartPoints = React.createClass({
   render: function() {
     var playerData = this.props.playerData;
     var player = playerData.key;
+    var onDieMouseOver = this.props.onDieMouseOver;
+    var onDieMouseOut = this.props.onDieMouseOut;
     var onDieClick = this.props.onDieClick;
     var firstPartPoints = [];
 
@@ -13,7 +15,8 @@ var FirstPartPoints = React.createClass({
 
       firstPartPoints.push(
         <div className="row" key={i} style={{marginBottom: 10}}>
-          <DiceRow dieFace={i} player={player} key={i + '_' + player} onDieClick={onDieClick} />
+          <DiceRow dieFace={i} player={player} key={i + '_' + player}
+            onDieClick={onDieClick} onDieMouseOver={onDieMouseOver} onDieMouseOut={onDieMouseOut} />
           <div className="col-xs-3" key="result">{playerData[identifier] < 0 ? "-" : playerData[identifier]}</div>
         </div>
       );

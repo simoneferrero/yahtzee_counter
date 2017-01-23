@@ -5,6 +5,8 @@ var Die = React.createClass({
     var numberOfDice = this.props.numberOfDice; //this is the number of dice between 0 and 5 within the row
     var dieFace = this.props.dieFace; //this is the face of the die between 1 and 6 for one player
     var player = this.props.player; //this is the player id (key) among all players
+    var onMouseOver = this.props.onMouseOver;
+    var onMouseOut = this.props.onMouseOut;
     var onClick = this.props.onClick;
     var dieFacesArray = [
       [0],//no dot-cross
@@ -25,9 +27,18 @@ var Die = React.createClass({
       );
     }
 
+    var rowHighlighted = "";
+    for (var j = 0; j <= numberOfDice; j++) {
+      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
+      if (j != numberOfDice) {
+        rowHighlighted += ", ";
+      }
+    }
+
     var die = (<div className={"die die" + numberOfDice + '_' + dieFace + '_' + player}>
       {dots}
-      <div className={"dieCover " + numberOfDice + '_' + dieFace + '_' + player + " " + dieFace + '_' + player}  onClick={onClick}></div>
+      <div className={"dieCover " + numberOfDice + '_' + dieFace + '_' + player + " " + dieFace + '_' + player}
+        onMouseEnter={onMouseOver} onMouseOut={onMouseOut} onClick={onClick}></div>
     </div>);
 
     return die;
