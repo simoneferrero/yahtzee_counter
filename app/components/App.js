@@ -78,17 +78,29 @@ var App = React.createClass({
     var dieFaceIndex = "s" + dieInfo[1];
     var player = dieInfo[2];
 
-    for (var i = 0; i < players.length; i++) {
-      if (player == players[i].key) {
-        players[i][dieFaceIndex] = numberOfDice * dieFace;
-        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+    var rowHighlighted = "";
+    for (var j = 0; j <= numberOfDice; j++) {
+      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
+      if (j != numberOfDice) {
+        rowHighlighted += ", ";
       }
     }
 
-    $("." + dieFace + "_" + player).css(
-      "opacity": 0
-    ); //NOT WORKING: REMOVE ALL PREVIOUS STYLING
-    e.target.style.opacity = 0.5;
+    $("." + dieFace + "_" + player).removeClass("highlightedDie");//removes all highlighted elements from row
+
+    console.log(rowHighlighted);
+
+    for (var i = 0; i < players.length; i++) {
+      if (player == players[i].key) {
+        if (players[i][dieFaceIndex] != numberOfDice * dieFace) {//checks if value was already selected
+          players[i][dieFaceIndex] = numberOfDice * dieFace;
+          $(rowHighlighted).addClass("highlightedDie");
+        } else {//if it was selected, it reverts to default
+          players[i][dieFaceIndex] = -1;
+        }
+        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+      }
+    }
 
     this.setState({
       players: players

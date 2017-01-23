@@ -25,7 +25,7 @@ var Die = React.createClass({
       );
     }
 
-    var die = (<div className={"die " + numberOfDice + '_' + dieFace + '_' + player}>
+    var die = (<div className={"die die" + numberOfDice + '_' + dieFace + '_' + player}>
       {dots}
       <div className={"dieCover " + numberOfDice + '_' + dieFace + '_' + player + " " + dieFace + '_' + player}  onClick={onClick}></div>
     </div>);
