@@ -7,19 +7,7 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       playerId: 1,
-      players: [
-      //  {
-      //     key: 0,
-      //     name: 'testPlayer',
-      //     s1: '',
-      //     s2: '',
-      //     s3: '',
-      //     s4: '',
-      //     s5: '',
-      //     s6: '',
-      //     firstPartSum: 0
-      //   }
-      ],
+      players: [],
       columnSizes: [
         "col-xs-12",
         "col-xs-6",
@@ -45,6 +33,23 @@ var App = React.createClass({
     return pointsSum;
   },
 
+  updateBonus: function(player) {
+    return player.firstPartSum >= 63 ? 35 : 0
+  },
+
+  updateTotal: function(player) {
+    var pointsArray = [player.firstPartSum, player.bonusPoints, player.toak, player.foak, player.fh, player.ss, player.ls, player.yaht, player.chance];
+    var total = 0;
+
+    pointsArray.forEach(function(item, index) {
+      if (item >= 0) {
+        total += item;
+      }
+    });
+
+    return total;
+  },
+
   addNewPlayer: function(event) {
     event.preventDefault();
     var playerName = $("#newPlayer").val();
@@ -52,12 +57,27 @@ var App = React.createClass({
       key: this.state.playerId,
       name: playerName,
       s1: -1,
+      s1locked: false,
       s2: -1,
+      s2locked: false,
       s3: -1,
+      s3locked: false,
       s4: -1,
+      s4locked: false,
       s5: -1,
+      s5locked: false,
       s6: -1,
-      firstPartSum: 0
+      s6locked: false,
+      firstPartSum: 0,
+      bonusPoints: 0,
+      toak: -1,
+      foak: -1,
+      fh: -1,
+      ss: -1,
+      ls: -1,
+      yaht: -1,
+      chance: -1,
+      grandTotal: 0
     };
     if (playerName !== "") {
       this.setState({
@@ -69,24 +89,116 @@ var App = React.createClass({
     $("#newPlayer").val('').focus();
   },
 
-  changePoints: function(e) {
-    var playerKey = e.target.className.split(" ")[0];
-    var numValue = e.target.className.split(" ")[1];
-    var numberKey = "s" + numValue;
-    var inputValue = parseInt(e.target.value);
+  onDieMouseOver: function(e) {
     var players = this.state.players;
+    var dieInfo = e.target.className.split(" ")[1].split("_");
 
-    for (var i = 0; i < players.length; i++) {
-      if (playerKey == players[i].key) {
-        players[i][numberKey] = inputValue * numValue;
-        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+    var numberOfDice = parseInt(dieInfo[0]);
+    var dieFace = dieInfo[1];
+    var dieFaceIndex = "s" + dieInfo[1];
+    var player = dieInfo[2];
+    var dieRowLock = "s" + dieInfo[1] + "locked";
+
+    var rowHighlighted = "";
+    for (var j = 0; j <= numberOfDice; j++) {
+      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
+      if (j != numberOfDice) {
+        rowHighlighted += ", ";
       }
     }
+
+    for (var i = 0; i < players.length; i++) {
+      if (player == players[i].key && players[i][dieRowLock] === false) {
+        $("." + dieFace + "_" + player).removeClass("highlightedDie");//removes all highlighted elements from row
+        if (players[i][dieFaceIndex] != numberOfDice * dieFace) {//checks if value was already selected
+          players[i][dieFaceIndex] = numberOfDice * dieFace;
+          $(rowHighlighted).addClass("highlightedDie");
+        } else {//if it was selected, it reverts to default
+          players[i][dieFaceIndex] = -1;
+        }
+        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+        players[i].bonusPoints = this.updateBonus(players[i]);
+        players[i].grandTotal = this.updateTotal(players[i]);
+
+        this.setState({
+          players: players
+        });
+      }
+    }
+  },
+
+  onDieMouseOut: function(e) {
+    var players = this.state.players;
+    var dieInfo = e.target.className.split(" ")[1].split("_");
+
+    var numberOfDice = parseInt(dieInfo[0]);
+    var dieFace = dieInfo[1];
+    var dieFaceIndex = "s" + dieInfo[1];
+    var player = dieInfo[2];
+    var dieRowLock = "s" + dieInfo[1] + "locked";
+
+    var rowHighlighted = "";
+    for (var j = 0; j <= numberOfDice; j++) {
+      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
+      if (j != numberOfDice) {
+        rowHighlighted += ", ";
+      }
+    }
+
+    for (var i = 0; i < players.length; i++) {
+      if (player == players[i].key && players[i][dieRowLock] === false) {
+        $("." + dieFace + "_" + player).removeClass("highlightedDie");
+        players[i][dieFaceIndex] = -1;
+        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+        players[i].bonusPoints = this.updateBonus(players[i]);
+        players[i].grandTotal = this.updateTotal(players[i]);
+
+        this.setState({
+          players: players
+        });
+      }
+    }
+  },
+
+  onDieClick: function(e) {
+    var players = this.state.players;
+    var dieInfo = e.target.className.split(" ")[1].split("_");
+
+    var numberOfDice = parseInt(dieInfo[0]);
+    var dieFace = dieInfo[1];
+    var dieFaceIndex = "s" + dieInfo[1];
+    var player = dieInfo[2];
+    var dieRowLock = "s" + dieInfo[1] + "locked";
+
+    var rowHighlighted = "";
+    for (var j = 0; j <= numberOfDice; j++) {
+      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
+      if (j != numberOfDice) {
+        rowHighlighted += ", ";
+      }
+    }
+
+    for (var i = 0; i < players.length; i++) {
+      if (player == players[i].key && players[i][dieRowLock] === true) {
+        $("." + dieFace + "_" + player).removeClass("highlightedDie");//removes all highlighted elements from row
+        if (players[i][dieFaceIndex] != numberOfDice * dieFace) {//checks if value was already selected
+          players[i][dieFaceIndex] = numberOfDice * dieFace;
+          $(rowHighlighted).addClass("highlightedDie");
+        } else {//if it was selected, it reverts to default
+          players[i][dieFaceIndex] = -1;
+          players[i][dieRowLock] = false;
+        }
+      } else {
+        players[i][dieRowLock] = true;
+      }
+      players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+      players[i].bonusPoints = this.updateBonus(players[i]);
+      players[i].grandTotal = this.updateTotal(players[i]);
+    }
+
     this.setState({
       players: players
     });
-    // console.log(playerKey + " " + numberKey + " " + inputValue);
-    console.log(this.state.players);
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -114,11 +226,13 @@ var App = React.createClass({
     }
   },
 
+
   render: function() {
     return <div>{([
       <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />,
       // <TempName tempName={this.state.players} />,
-      <FirstPart key="firstPart" chosenColumnSize={this.state.chosenColumnSize} players={this.state.players} onChange={this.changePoints} />
+      <FirstPart key="firstPart" chosenColumnSize={this.state.chosenColumnSize} players={this.state.players}
+        onDieClick={this.onDieClick} onDieMouseOver={this.onDieMouseOver} onDieMouseOut={this.onDieMouseOut} />
     ])}</div>
   }
 });

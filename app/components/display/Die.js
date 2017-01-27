@@ -2,74 +2,43 @@ var React = require('react');
 
 var Die = React.createClass({
   render: function() {
-    var dieFaces = {
-      none: [
-        <div className="dieCross" key="dieCross"></div>
-      ],
-      die1: [
-        <div className="dieDot dieDot7" key="dot7"></div>
-      ],
-      die2: [
-        <div className="dieDot dieDot1" key="dot1"></div>,
-        <div className="dieDot dieDot6" key="dot6"></div>
-      ],
-      die3: [
-        <div className="dieDot dieDot1" key="dot1"></div>,
-        <div className="dieDot dieDot6" key="dot6"></div>,
-        <div className="dieDot dieDot7" key="dot7"></div>
-      ],
-      die4: [
-        <div className="dieDot dieDot1" key="dot1"></div>,
-        <div className="dieDot dieDot3" key="dot3"></div>,
-        <div className="dieDot dieDot4" key="dot4"></div>,
-        <div className="dieDot dieDot6" key="dot6"></div>
-      ],
-      die5: [
-        <div className="dieDot dieDot1" key="dot1"></div>,
-        <div className="dieDot dieDot3" key="dot3"></div>,
-        <div className="dieDot dieDot4" key="dot4"></div>,
-        <div className="dieDot dieDot6" key="dot6"></div>,
-        <div className="dieDot dieDot7" key="dot7"></div>
-      ],
-      die6: [
-        <div className="dieDot dieDot1" key="dot1"></div>,
-        <div className="dieDot dieDot2" key="dot2"></div>,
-        <div className="dieDot dieDot3" key="dot3"></div>,
-        <div className="dieDot dieDot4" key="dot4"></div>,
-        <div className="dieDot dieDot5" key="dot5"></div>,
-        <div className="dieDot dieDot6" key="dot6"></div>
-      ]
-    };
+    var numberOfDice = this.props.numberOfDice; //this is the number of dice between 0 and 5 within the row
+    var dieFace = this.props.dieFace; //this is the face of the die between 1 and 6 for one player
+    var player = this.props.player; //this is the player id (key) among all players
+    var onMouseOver = this.props.onMouseOver;
+    var onMouseOut = this.props.onMouseOut;
+    var onClick = this.props.onClick;
+    var dieFacesArray = [
+      [0],//no dot-cross
+      [4, 5, 6],//top-left
+      [6],//top-mid
+      [2, 3, 4, 5, 6],//top-right
+      [2, 3, 4, 5, 6],//bottom-left
+      [6],//bottom-mid
+      [4, 5, 6],//bottom-right
+      [1, 3, 5]//center
+    ]; //each index in the large array refers to the dot, and the values inside refer to the faces in which they are shown
 
-    var dots = [];
-    switch (this.props.dieFace.toString()) {
-      case "0":
-        dots.push(dieFaces.none);
-        break;
-      case "1":
-        dots.push(dieFaces.die1);
-        break;
-      case "2":
-        dots.push(dieFaces.die2);
-        break;
-      case "3":
-        dots.push(dieFaces.die3);
-        break;
-      case "4":
-        dots.push(dieFaces.die4);
-        break;
-      case "5":
-        dots.push(dieFaces.die5);
-        break;
-      case "6":
-        dots.push(dieFaces.die6);
-        break;
-      default:
-        break;
+    var dots = [<div className={dieFacesArray[0].includes(numberOfDice) ? "dieCross" : ""} key="dieCross"></div>];
+
+    for (var i = 1; i <= 7; i++) {
+      dots.push(
+        <div className={dieFacesArray[i].includes(dieFace) && numberOfDice != 0 ? "dieDot dieDot" + i : ""} key={"dot" + i}></div>
+      );
     }
 
-    var die = (<div className="die">
+    var rowHighlighted = "";
+    for (var j = 0; j <= numberOfDice; j++) {
+      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
+      if (j != numberOfDice) {
+        rowHighlighted += ", ";
+      }
+    }
+
+    var die = (<div className={"die die" + numberOfDice + '_' + dieFace + '_' + player}>
       {dots}
+      <div className={"dieCover " + numberOfDice + '_' + dieFace + '_' + player + " " + dieFace + '_' + player}
+        onMouseEnter={onMouseOver} onMouseOut={onMouseOut} onClick={onClick}></div>
     </div>);
 
     return die;
