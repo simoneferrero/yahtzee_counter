@@ -7,19 +7,7 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       playerId: 1,
-      players: [
-      //  {
-      //     key: 0,
-      //     name: 'testPlayer',
-      //     s1: '',
-      //     s2: '',
-      //     s3: '',
-      //     s4: '',
-      //     s5: '',
-      //     s6: '',
-      //     firstPartSum: 0
-      //   }
-      ],
+      players: [],
       columnSizes: [
         "col-xs-12",
         "col-xs-6",
@@ -45,6 +33,23 @@ var App = React.createClass({
     return pointsSum;
   },
 
+  updateBonus: function(player) {
+    return player.firstPartSum >= 63 ? 35 : 0
+  },
+
+  updateTotal: function(player) {
+    var pointsArray = [player.firstPartSum, player.bonusPoints, player.toak, player.foak, player.fh, player.ss, player.ls, player.yaht, player.chance];
+    var total = 0;
+
+    pointsArray.forEach(function(item, index) {
+      if (item >= 0) {
+        total += item;
+      }
+    });
+
+    return total;
+  },
+
   addNewPlayer: function(event) {
     event.preventDefault();
     var playerName = $("#newPlayer").val();
@@ -63,7 +68,16 @@ var App = React.createClass({
       s5locked: false,
       s6: -1,
       s6locked: false,
-      firstPartSum: 0
+      firstPartSum: 0,
+      bonusPoints: 0,
+      toak: -1,
+      foak: -1,
+      fh: -1,
+      ss: -1,
+      ls: -1,
+      yaht: -1,
+      chance: -1,
+      grandTotal: 0
     };
     if (playerName !== "") {
       this.setState({
@@ -103,6 +117,8 @@ var App = React.createClass({
           players[i][dieFaceIndex] = -1;
         }
         players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+        players[i].bonusPoints = this.updateBonus(players[i]);
+        players[i].grandTotal = this.updateTotal(players[i]);
 
         this.setState({
           players: players
@@ -134,6 +150,9 @@ var App = React.createClass({
         $("." + dieFace + "_" + player).removeClass("highlightedDie");
         players[i][dieFaceIndex] = -1;
         players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+        players[i].bonusPoints = this.updateBonus(players[i]);
+        players[i].grandTotal = this.updateTotal(players[i]);
+
         this.setState({
           players: players
         });
@@ -173,6 +192,8 @@ var App = React.createClass({
         players[i][dieRowLock] = true;
       }
       players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
+      players[i].bonusPoints = this.updateBonus(players[i]);
+      players[i].grandTotal = this.updateTotal(players[i]);
     }
 
     this.setState({
