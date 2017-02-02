@@ -1,0 +1,74 @@
+.die {
+  height: 24px;
+  width: 24px;
+  border: 1px solid black;
+  position: relative;
+  margin: 0 auto; }
+
+.die:hover {
+  cursor: pointer; }
+
+.dieCover {
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  z-index: 999;
+  margin-left: -1px;
+  margin-top: -1px;
+  background-color: transparent; }
+
+.highlightedDie {
+  background-color: rgba(244, 9, 21, 0.5); }
+
+.dieDot {
+  height: 4px;
+  width: 4px;
+  border-radius: 100%;
+  background-color: black;
+  position: absolute;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none; }
+
+.dieDot1 {
+  top: 3px;
+  left: 3px; }
+
+.dieDot2 {
+  top: 3px;
+  left: 50%;
+  margin-left: -2px; }
+
+.dieDot3 {
+  top: 3px;
+  right: 3px; }
+
+.dieDot4 {
+  bottom: 3px;
+  left: 3px; }
+
+.dieDot5 {
+  bottom: 3px;
+  left: 50%;
+  margin-left: -2px; }
+
+.dieDot6 {
+  bottom: 3px;
+  right: 3px; }
+
+.dieDot7 {
+  top: 50%;
+  margin-top: -2px;
+  left: 50%;
+  margin-left: -2px; }
+
+.dieNoDot {
+  font-size: 22px;
+  position: absolute;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none; }
