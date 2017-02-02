@@ -2,43 +2,51 @@ var React = require('react');
 
 var Die = React.createClass({
   render: function() {
-    var numberOfDice = this.props.numberOfDice; //this is the number of dice between 0 and 5 within the row
-    var dieFace = this.props.dieFace; //this is the face of the die between 1 and 6 for one player
-    var player = this.props.player; //this is the player id (key) among all players
-    var onMouseOver = this.props.onMouseOver;
-    var onMouseOut = this.props.onMouseOut;
+    var dieFace = parseInt(this.props.dieFace); //this is the face that the die will show (cross, 1, 2, 3, 4, 5, 6, check)
+    var dieValue = parseInt(this.props.dieValue); //this is the value of the die in the row, e.g. 0 to 5 in first part, or 0 to 6 in 3 of a kind in second part
+    var rowValue = parseInt(this.props.rowValue); //this is the value of the row, eg. 1 to 6 in first part, or 3 of a kind in second part
+    var playerKey = parseInt(this.props.playerKey); //this is the player id (key)
+    // var onMouseOver = this.props.onMouseOver;
+    // var onMouseOut = this.props.onMouseOut;
     var onClick = this.props.onClick;
-    var dieFacesArray = [
-      [0],//no dot-cross
-      [4, 5, 6],//top-left
-      [6],//top-mid
-      [2, 3, 4, 5, 6],//top-right
-      [2, 3, 4, 5, 6],//bottom-left
-      [6],//bottom-mid
-      [4, 5, 6],//bottom-right
-      [1, 3, 5]//center
-    ]; //each index in the large array refers to the dot, and the values inside refer to the faces in which they are shown
 
-    var dots = [<div className={dieFacesArray[0].includes(numberOfDice) ? "dieCross" : ""} key="dieCross"></div>];
+    var dieFaces = [
+      [],
+      [7],
+      [3, 4],
+      [3, 4, 7],
+      [1, 3, 4, 6],
+      [1, 3, 4, 6, 7],
+      [1, 2, 3, 4, 5, 6]
+    ]; //each index in the large array refers to the face, and the values inside refer to the dots that show on the face
 
-    for (var i = 1; i <= 7; i++) {
-      dots.push(
-        <div className={dieFacesArray[i].includes(dieFace) && numberOfDice != 0 ? "dieDot dieDot" + i : ""} key={"dot" + i}></div>
-      );
-    }
+    var dots = [];
 
-    var rowHighlighted = "";
-    for (var j = 0; j <= numberOfDice; j++) {
-      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
-      if (j != numberOfDice) {
-        rowHighlighted += ", ";
+    if (dieFace < 1) {
+      dots.push(<span className="glyphicon glyphicon-remove dieNoDot" key="dieNone"></span>);
+    } else if (dieFace > 6) {
+      dots.push(<span className="glyphicon glyphicon-ok dieNoDot" key="dieCheck"></span>);
+    } else {
+      for (var i = 0; i < dieFaces[dieFace].length; i++) {
+        dots.push(
+          <div className={"dieDot dieDot" + dieFaces[dieFace][i]} key={"dot" + dieFaces[dieFace][i]}></div>
+        );
       }
     }
 
-    var die = (<div className={"die die" + numberOfDice + '_' + dieFace + '_' + player}>
+
+    // var rowHighlighted = "";
+    // for (var j = 0; j <= dieValue; j++) {
+    //   rowHighlighted += "." + j + "_" + rowValue + "_" + playerKey;
+    //   if (j != dieValue) {
+    //     rowHighlighted += ", ";
+    //   }
+    // }
+
+    var die = (<div className={"die " + dieValue + '_' + rowValue + '_' + playerKey}>
       {dots}
-      <div className={"dieCover " + numberOfDice + '_' + dieFace + '_' + player + " " + dieFace + '_' + player}
-        onMouseEnter={onMouseOver} onMouseOut={onMouseOut} onClick={onClick}></div>
+      <div className={"dieCover " + dieValue + '_' + rowValue + '_' + playerKey}// + " " + rowValue + '_' + playerKey}
+        onClick={onClick}></div>
     </div>);
 
     return die;

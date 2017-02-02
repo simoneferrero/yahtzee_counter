@@ -1,5 +1,6 @@
 var React = require('react');
 var Jumbotron = require('./display/Jumbotron');
+var Die = require('./display/Die');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -21,7 +22,7 @@ var App = React.createClass({
     event.preventDefault();
     var playerName = $("#newPlayer").val();
     if (playerName !== "") {
-      var player = {
+      var players = this.state.players.slice().concat({
         id: this.state.playerId,
         name: playerName,
         pointsFirstPart: new Array(7).fill({
@@ -34,7 +35,7 @@ var App = React.createClass({
           A negative value means the row is untouched.
           isLocked is used to lock the points when the mouse leaves the die.
         */
-        firstPartSum: 64,
+        firstPartSum: 0,
         bonusPoints: 0,
         pointsSecondPart: new Array(7).fill({
           numberOfDice: -1,
@@ -51,15 +52,21 @@ var App = React.createClass({
           6: chance
         */
         grandTotal: 0
-      };
+      });
+
+      var playerId = this.state.playerId + 1;
 
       this.setState({
-        players: this.state.players.concat(player),
-        playerId: this.state.playerId + 1
+        players: players,
+        playerId: playerId
       });
     }
 
     $("#newPlayer").val('').focus();
+  },
+
+  onDieClick: function(e) {
+    console.dir(e.target.className);
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -67,9 +74,15 @@ var App = React.createClass({
   },
 
   render: function() {
+    var tempDiceArray = [];
+    for (var i = 0; i < 8; i++) {
+      tempDiceArray.push(<Die onClick={this.onDieClick} dieFace={i} dieValue="5" rowValue="2" playerKey="1" />);
+    }
     return (
       <div>
-        <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />,
+        <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />
+        {tempDiceArray}
+        {/* <Die onClick={this.onDieClick} dieFace="" dieValue="5" rowValue="2" playerKey="1" /> */}
       </div>
     );
   }
