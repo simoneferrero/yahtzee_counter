@@ -18,9 +18,8 @@
 }
 
 //die mixins
-@mixin die($border: $die-border, $position: relative) {
+@mixin die($position: relative) {
   height: $die-size;
   width: $die-size;
-  border: $border;
   position: $position;
 }

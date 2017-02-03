@@ -1,0 +1,13 @@
+@import 'helpers/mixins';
+@import 'helpers/variables';
+@import 'helpers/placeholders';
+
+.diceRow {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: {
+    top: 5px;
+    bottom: 5px;
+  }
+}

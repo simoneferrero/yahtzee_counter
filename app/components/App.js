@@ -1,6 +1,7 @@
 var React = require('react');
 var Jumbotron = require('./display/Jumbotron');
-var Die = require('./display/Die');
+var DiceRow = require('./display/DiceRow');
+// var Die = require('./display/Die');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -74,15 +75,42 @@ var App = React.createClass({
   },
 
   render: function() {
-    var tempDiceArray = [];
-    for (var i = 0; i < 8; i++) {
-      tempDiceArray.push(<Die onClick={this.onDieClick} key={i} dieFace={i} dieValue="5" rowValue="2" playerKey="1" />);
+    var tempDiceRowsArrayFP = [];
+    for (var i = 1; i <= 6; i++) {
+      tempDiceRowsArrayFP.push(
+        <div className="row" key={i}>
+          <DiceRow onClick={this.onDieClick}
+            rowValue={i} part="1" playerKey="1" />
+        </div>
+      );
     }
+
+    var tempDiceRowsArraySP = [];
+    for (var i = 0; i <= 6; i++) {
+      tempDiceRowsArraySP.push(
+        <div className="row" key={i}>
+          <DiceRow onClick={this.onDieClick}
+            rowValue={i} part="2" playerKey="1" />
+        </div>
+      );
+    }
+
     return (
       <div>
         <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />
-        {tempDiceArray}
-        {/* <Die onClick={this.onDieClick} dieFace="" dieValue="5" rowValue="2" playerKey="1" /> */}
+        <div className="container firstPart">
+          {tempDiceRowsArrayFP}
+          {/* <div className="row">
+            <DiceRow onClick={this.onDieClick} rowValue="5" part="1" playerKey="1" />
+          </div> */}
+        </div>
+        <div className="container secondPart">
+          {tempDiceRowsArraySP}
+          {/* <div className="row">
+            <DiceRow onClick={this.onDieClick} rowValue="5" part="1" playerKey="1" />
+          </div> */}
+        </div>
+        {/* {tempDiceArray} */}
       </div>
     );
   }

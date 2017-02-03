@@ -4,13 +4,18 @@
 
 .die {
   @include die;
+  border: $die-border;
   margin: 0 auto;
 }
 
 .dieCover {
-  @include die($diedot-border, absolute);
+  @include die(absolute);
   background-color: transparent;
   z-index: 999;
+  margin: {
+    top: -1px;
+    left: -1px;
+  }
 
   &:hover {
     cursor: pointer;
@@ -22,9 +27,13 @@
   font-size: $dienodot-size;
   position: absolute;
   top: 50%;
-  margin-top: -$dienodot-size/2;
+  //margin-top: -$dienodot-size/2;
   left: 50%;
-  margin-left: -$dienodot-size/2;
+  // margin-left: -$dienodot-size/2;
+  margin: {
+    top: -$dienodot-size/2;
+    left: -$dienodot-size/2;
+  }
   @include user-select(none);
 }
 
@@ -69,7 +78,9 @@
 .dieDotCenter {
   @extend %diedot;
   top: 50%;
-  margin-top: -$diedot-size/2;
   left: 50%;
-  margin-left: -$diedot-size/2;
+  margin: {
+    top: -$diedot-size/2;
+    left: -$diedot-size/2;
+  }
 }
