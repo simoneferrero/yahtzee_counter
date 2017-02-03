@@ -6,20 +6,18 @@ var Die = React.createClass({
     var dieValue = parseInt(this.props.dieValue); //this is the value of the die in the row, e.g. 0 to 5 in first part, or 0 to 6 in 3 of a kind in second part
     var rowValue = parseInt(this.props.rowValue); //this is the value of the row, eg. 1 to 6 in first part, or 3 of a kind in second part
     var playerKey = parseInt(this.props.playerKey); //this is the player id (key)
-    // var onMouseOver = this.props.onMouseOver;
-    // var onMouseOut = this.props.onMouseOut;
     var onClick = this.props.onClick;
 
     var dieFaces = [
       [],
-      [7],
-      [3, 4],
-      [3, 4, 7],
-      [1, 3, 4, 6],
-      [1, 3, 4, 6, 7],
-      [1, 2, 3, 4, 5, 6]
+      ['Center'],
+      ['TopRight', 'BottomLeft'],
+      ['TopRight', 'BottomLeft', 'Center'],
+      ['TopLeft', 'TopRight', 'BottomLeft', 'BottomRight'],
+      ['TopLeft', 'TopRight', 'BottomLeft', 'BottomRight', 'Center'],
+      ['TopLeft', 'TopCenter', 'TopRight', 'BottomLeft', 'BottomCenter', 'BottomRight']
     ]; //each index in the large array refers to the face, and the values inside refer to the dots that show on the face
-
+    var dieFaceDots = dieFaces[dieFace];
     var dots = [];
 
     if (dieFace < 1) {
@@ -27,21 +25,13 @@ var Die = React.createClass({
     } else if (dieFace > 6) {
       dots.push(<span className="glyphicon glyphicon-ok dieNoDot" key="dieCheck"></span>);
     } else {
-      for (var i = 0; i < dieFaces[dieFace].length; i++) {
+      for (var i = 0; i < dieFaceDots.length; i++) {
+        var dotName= "dieDot" + dieFaceDots[i];
         dots.push(
-          <div className={"dieDot dieDot" + dieFaces[dieFace][i]} key={"dot" + dieFaces[dieFace][i]}></div>
+          <div className={dotName} key={dotName}></div>
         );
       }
     }
-
-
-    // var rowHighlighted = "";
-    // for (var j = 0; j <= dieValue; j++) {
-    //   rowHighlighted += "." + j + "_" + rowValue + "_" + playerKey;
-    //   if (j != dieValue) {
-    //     rowHighlighted += ", ";
-    //   }
-    // }
 
     var die = (<div className={"die " + dieValue + '_' + rowValue + '_' + playerKey}>
       {dots}

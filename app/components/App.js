@@ -76,7 +76,7 @@ var App = React.createClass({
   render: function() {
     var tempDiceArray = [];
     for (var i = 0; i < 8; i++) {
-      tempDiceArray.push(<Die onClick={this.onDieClick} dieFace={i} dieValue="5" rowValue="2" playerKey="1" />);
+      tempDiceArray.push(<Die onClick={this.onDieClick} key={i} dieFace={i} dieValue="5" rowValue="2" playerKey="1" />);
     }
     return (
       <div>

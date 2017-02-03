@@ -1,0 +1,10 @@
+@import 'helpers/variables';
+
+%diedot {
+  height: $diedot-size;
+  width: $diedot-size;
+  background-color: black;
+  position: absolute;
+  @include border-radius(100%);
+  @include user-select(none);
+}
