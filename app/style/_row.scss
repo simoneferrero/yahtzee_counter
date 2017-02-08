@@ -2,12 +2,20 @@
 @import 'helpers/variables';
 @import 'helpers/placeholders';
 
-.diceRow {
+.diceRow, .rowName, .rowPoints {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   margin: {
     top: 5px;
     bottom: 5px;
+  }
+}
+
+.rowName, .rowPoints {
+  min-height: $die-size;
+  span {
+    line-height: $die-size;
+    font-size: $die-size / 2;
   }
 }

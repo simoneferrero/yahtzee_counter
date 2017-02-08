@@ -3,9 +3,9 @@ var React = require('react');
 var Die = React.createClass({
   render: function() {
     var dieFace       = parseInt(this.props.dieFace); //this is the face that the die will show (cross, 1, 2, 3, 4, 5, 6, check)
-    var dieValue      = parseInt(this.props.dieValue); //this is the value of the die in the row, e.g. 0 to 5 in first part, or 0 to 6 in 3 of a kind in second part
-    var rowValue      = parseInt(this.props.rowValue); //this is the value of the row, eg. 1 to 6 in first part, or 3 of a kind in second part
-    var part          = parseInt(this.props.part); //this is the value of which part of the game the row refers to
+    var dieValue      = parseInt(this.props.dieValue); //this is the value of the die in the row, e.g. 0 to 5 in first section, or 0 to 6 in 3 of a kind in second section
+    var rowValue      = parseInt(this.props.rowValue); //this is the value of the row, eg. 1 to 6 in first section, or 3 of a kind in second section
+    var section       = parseInt(this.props.section); //this is the value of which section of the game the row refers to
     var playerKey     = parseInt(this.props.playerKey); //this is the player id (key)
     var onClick       = this.props.onClick;
 
@@ -20,8 +20,8 @@ var Die = React.createClass({
     ]; //each index in the large array refers to the face, and the values inside refer to the dots that show on the face
     var dieFaceDots   = dieFaces[dieFace];
     var dots          = [];
-    var dieCoverClass = dieValue + '_' + rowValue + '_' + part + '_' + playerKey;
-                            //dieValue_rowValue_part_playerKey
+    var dieCoverClass = dieValue + '_' + rowValue + '_' + section + '_' + playerKey;
+                            //dieValue_rowValue_section_playerKey
 
     if (dieFace < 1) {
       dots.push(<span className="glyphicon glyphicon-remove dieNoDot" key="dieDotNone"></span>);

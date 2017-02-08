@@ -6,6 +6,7 @@
   @include die;
   border: $die-border;
   margin: 0 auto;
+  @include border-radius($die-size / 10);
 }
 
 .dieCover {
@@ -27,9 +28,7 @@
   font-size: $dienodot-size;
   position: absolute;
   top: 50%;
-  //margin-top: -$dienodot-size/2;
   left: 50%;
-  // margin-left: -$dienodot-size/2;
   margin: {
     top: -$dienodot-size/2;
     left: -$dienodot-size/2;

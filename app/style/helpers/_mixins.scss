@@ -10,11 +10,11 @@
 }
 
 @mixin border-radius($radius) {
-  user-select: $radius;
-  -webkit-user-select: $radius;
-  -moz-user-select: $radius;
-  -ms-user-select: $radius;
-  -o-user-select: $radius;
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
 }
 
 //die mixins
