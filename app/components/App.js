@@ -51,17 +51,21 @@ var App = React.createClass({
       var players = this.state.players.slice().concat({
         key: this.state.playerId,
         name: playerName,
-        pointsUpperSection: new Array(7).fill({
-          numberOfDice: -1,
-          points: 0,
-          isLocked: false
+        pointsUpperSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false
+          };
         }),
         firstsectionSum: 0,
         bonusPoints: 0,
-        pointsLowerSection: new Array(7).fill({
-          numberOfDice: -1,
-          points: 0,
-          isLocked: false
+        pointsLowerSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false
+          };
         }),
         grandTotal: 0
       });
@@ -78,7 +82,6 @@ var App = React.createClass({
   },
 
   onDieClick: function(e) {
-    //dieValue_rowValue_section_playerKey
     var dieIdValues = e.target.id.split('_');
     var rowValue    = parseInt(dieIdValues[1]);
     var section     = parseInt(dieIdValues[2]);
@@ -90,27 +93,29 @@ var App = React.createClass({
     var points      = this.countPoints(section, rowValue, dieValue);
 
     for (var i = 0; i < players.length; i++) {
-      var player          = players[i];
+      var player            = players[i];
       if (player.key === playerKey) {
-        var playerSection = player[section === 1 ? 'pointsUpperSection' : 'pointsLowerSection'];
-        var row           = playerSection[rowValue];
-        row.points        = points;
-        row.numberOfDice  = dieValue;
-        row.isLocked      = row.isLocked === false ? true : false;
-        //does not work, all upper section values are changed
-        console.log(rowValue);
-        console.log(player);
+        var playerSection   = player[section === 1 ? 'pointsUpperSection' : 'pointsLowerSection'];
+        var row             = playerSection[rowValue];
+        if (section === 2 && rowValue === 6) {
+          row.points        = points;
+          row.numberOfDice  = points;
+        } else {
+          row.points          = row.points === 0 ? points : 0;
+          row.numberOfDice    = row.numberOfDice === -1 ? dieValue : -1;
+          row.isLocked        = row.isLocked === false ? true : false;
+        }
       }
     }
 
-    // this.setState({
-    //   players: players
-    // });
+    this.setState({
+      players: players
+    });
 
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    console.log(this.state.players);
+    //console.log(this.state.players);
   },
 
   render: function() {
