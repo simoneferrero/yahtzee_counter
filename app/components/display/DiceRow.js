@@ -9,8 +9,6 @@ var DiceRow = React.createClass({
     var onClick   = this.props.onClick;
 
     var diceRow   = [];
-    //print the row according to the player, the section and the row value
-    //print the points according to the player, the section and the row value
 
     if (section === 1) {
       for (var i = 0; i <= 5; i++) {
@@ -35,15 +33,18 @@ var DiceRow = React.createClass({
           )
         }
       } else if (rowValue === 6) {
-        //one die and slider
+        var dieClass = 'slider_' + rowValue + '_' + section + '_' + playerKey;
+        diceRow.push(
+          <input type="range" defaultValue="-1" min="-1" max="36"
+          onChange={onClick} key="6" className={dieClass + " slider"} id={dieClass} />
+        );
       }
-
     } else {
       diceRow = 'There was an error loading information for this row';
     }
 
     return (
-      <div className="col-xs-8 diceRow">
+      <div className="col-xs-7 diceRow">
         {diceRow}
       </div>
     );

@@ -20,8 +20,10 @@ var Die = React.createClass({
     ]; //each index in the large array refers to the face, and the values inside refer to the dots that show on the face
     var dieFaceDots   = dieFaces[dieFace];
     var dots          = [];
-    var dieCoverClass = dieValue + '_' + rowValue + '_' + section + '_' + playerKey;
-                            //dieValue_rowValue_section_playerKey
+    var dieId         = dieValue + '_' + rowValue + '_' + section + '_' + playerKey;
+                      //dieValue_rowValue_section_playerKey
+    var dieClass      = rowValue + '_' + section + '_' + playerKey;
+                      //rowValue_section_playerKey
 
     if (dieFace < 1) {
       dots.push(<span className="glyphicon glyphicon-remove dieNoDot" key="dieDotNone"></span>);
@@ -39,7 +41,7 @@ var Die = React.createClass({
     var die = (
       <div className="die">
         {dots}
-        <div className={dieCoverClass + " dieCover"} onClick={onClick}></div>
+        <div id={dieId} className={dieClass + " dieCover"} onClick={onClick}></div>
       </div>
     );
 

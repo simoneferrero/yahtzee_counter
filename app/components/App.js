@@ -1,45 +1,47 @@
 var React     = require('react');
 var Jumbotron = require('./display/Jumbotron');
-var RowName   = require('./display/RowName');
-var DiceRow   = require('./display/DiceRow');
-var RowPoints = require('./display/RowPoints');
+var Points    = require('./display/Points');
 
 var App = React.createClass({
   getInitialState: function() {
     return {
       playerId: 1,
-      players: [
-        {
-          key: 0,
-          name: 'Test player',
-          pointsFirstSection: new Array(7).fill({
-            numberOfDice: -1,
-            points: 0,
-            isLocked: false
-          }),
-          firstsectionSum: 0,
-          bonusPoints: 0,
-          pointsSecondSection: new Array(7).fill({
-            numberOfDice: -1,
-            points: 0,
-            isLocked: false
-          }),
-          grandTotal: 0
-        }
-      ]//,
-      // columnSizes: [
-      //   "col-xs-12",
-      //   "col-xs-6",
-      //   "col-xs-6 col-sm-4",
-      //   "col-xs-6 col-sm-3",
-      //   "col-xs-6 col-sm-3 col-md-2"
-      // ],
-      // chosenColumnSize: ''
+      players: []
     };
   },
 
-  countPoints: function(value, dice) {
-    return value * dice;
+  countPoints: function(section, rowValue, dieValue) {
+    var points;
+
+    if (section === 1) {
+      points = rowValue * dieValue;
+    } else if (section === 2) {
+      switch (rowValue) {
+        case 0:
+          points = 3 * dieValue;
+          break;
+        case 1:
+          points = 4 * dieValue;
+          break;
+        case 2:
+          points = 25;
+          break;
+        case 3:
+          points = 30;
+          break;
+        case 4:
+          points = 40;
+          break;
+        case 5:
+          points = 50;
+          break;
+        case 6:
+          points = dieValue;
+          break;
+      }
+    }
+
+    return points;
   },
 
   addNewPlayer: function(event) {
@@ -49,34 +51,18 @@ var App = React.createClass({
       var players = this.state.players.slice().concat({
         key: this.state.playerId,
         name: playerName,
-        pointsFirstSection: new Array(7).fill({
+        pointsUpperSection: new Array(7).fill({
           numberOfDice: -1,
           points: 0,
           isLocked: false
         }),
-        /*
-          Each index, starting from 1, determines the value of the row.
-          numberOfDice shows how many dice have been selected for said row.
-          A negative value means the row is untouched.
-          isLocked is used to lock the points when the mouse leaves the die.
-        */
         firstsectionSum: 0,
         bonusPoints: 0,
-        pointsSecondSection: new Array(7).fill({
+        pointsLowerSection: new Array(7).fill({
           numberOfDice: -1,
           points: 0,
           isLocked: false
         }),
-        /*
-          Same as before, except now the indexes are as follow:
-          0: 3 of a kind
-          1: 4 of a kind
-          2: full house
-          3: small straight
-          4: large straight
-          5: yahtzee
-          6: chance
-        */
         grandTotal: 0
       });
 
@@ -93,16 +79,33 @@ var App = React.createClass({
 
   onDieClick: function(e) {
     //dieValue_rowValue_section_playerKey
-    var classNameValues = e.target.className.split(" ")[0].split('_')
-    var dieValue        = classNameValues[0];
-    var rowValue        = classNameValues[1];
-    var section         = classNameValues[2];
-    var playerKey       = classNameValues[3];
-    var players         = this.state.players.slice();
+    var dieIdValues = e.target.id.split('_');
+    var rowValue    = parseInt(dieIdValues[1]);
+    var section     = parseInt(dieIdValues[2]);
+    var dieValue    = section === 2 && rowValue === 6 ?
+                    parseInt(e.target.value) : parseInt(dieIdValues[0]);
+    var playerKey   = parseInt(dieIdValues[3]);
+    var players     = this.state.players.slice();
 
-    console.dir(e.target.className);
+    var points      = this.countPoints(section, rowValue, dieValue);
 
-    //call function this.countPoints and return updated state
+    for (var i = 0; i < players.length; i++) {
+      var player          = players[i];
+      if (player.key === playerKey) {
+        var playerSection = player[section === 1 ? 'pointsUpperSection' : 'pointsLowerSection'];
+        var row           = playerSection[rowValue];
+        row.points        = points;
+        row.numberOfDice  = dieValue;
+        row.isLocked      = row.isLocked === false ? true : false;
+        //does not work, all upper section values are changed
+        console.log(rowValue);
+        console.log(player);
+      }
+    }
+
+    // this.setState({
+    //   players: players
+    // });
 
   },
 
@@ -111,53 +114,13 @@ var App = React.createClass({
   },
 
   render: function() {
-    //this is all temporary until a specific component is created to display players
-    //before that a component shows first and second sections with points in between
-    var players   = this.state.players;
-    var toReturn  = [];
+    var players   = this.state.players.slice();
     var onClick   = this.onDieClick;
-
-    players.forEach(function(player, index) {
-      var tempDiceRowsArrayFP = [];
-      for (var i = 1; i <= 6; i++) {
-        tempDiceRowsArrayFP.push(
-          <div className="row" key={i}>
-            <RowName rowValue={i} section="1" />
-            <DiceRow onClick={onClick}
-              rowValue={i} section="1" playerKey={player.key} />
-            <RowPoints rowValue={i} section="1" playerKey={player.key} players={players} />
-          </div>
-        );
-      }
-
-      var tempDiceRowsArraySP = [];
-      for (var i = 0; i <= 6; i++) {
-        tempDiceRowsArraySP.push(
-          <div className="row" key={i}>
-            <RowName rowValue={i} section="2" />
-            <DiceRow onClick={onClick}
-              rowValue={i} section="2" playerKey={player.key} />
-            <RowPoints rowValue={i} section="2" playerKey={player.key} players={players} />
-          </div>
-        );
-      }
-
-      toReturn.push(
-        <div className="col-xs-6" key={index}>
-          <div className="firstSection">
-            {tempDiceRowsArrayFP}
-          </div>
-          <div className="secondSection">
-            {tempDiceRowsArraySP}
-          </div>
-        </div>
-      )
-    });
 
     return (
       <div>
         <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />
-        <div className="container"><div className="row">{toReturn}</div></div>
+        <Points players={players} onClick={onClick} />
       </div>
     );
   }

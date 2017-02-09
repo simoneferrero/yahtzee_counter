@@ -4,6 +4,6 @@ $die-border: 1px solid black;
 
 //diedot variables
 $dienodot-size: $die-size - 4px;
-$diedot-size: 4px;
+$diedot-size: $die-size / 6;
 $diedot-border: 1px solid transparent;
-$diedot-border-distance: 3px;
+$diedot-border-distance: $die-size / 8;
