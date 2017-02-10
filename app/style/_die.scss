@@ -9,6 +9,11 @@
   @include border-radius($die-size / 10);
 }
 
+.dieYahtzeeBonus {
+  @include die;
+  margin: 0 auto;
+}
+
 .dieCover {
   @include die(absolute);
   background-color: transparent;
@@ -24,16 +29,16 @@
 }
 
 //dieDots
-.dieNoDot {
-  font-size: $dienodot-size;
+.dieGlyphicon {
   position: absolute;
   top: 50%;
   left: 50%;
+  @include user-select(none);
+  font-size: $dienodot-size;
   margin: {
     top: -$dienodot-size/2;
     left: -$dienodot-size/2;
   }
-  @include user-select(none);
 }
 
 .dieDotTopLeft {

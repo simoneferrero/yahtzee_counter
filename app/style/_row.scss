@@ -2,7 +2,9 @@
 @import 'helpers/variables';
 @import 'helpers/placeholders';
 
-.diceRow, .rowName, .rowPoints {
+.diceRow, .rowName, .rowPoints,
+.subTotal, .bonusPoints,
+.grandTotal {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -12,7 +14,9 @@
   }
 }
 
-.rowName, .rowPoints {
+.rowName, .rowPoints,
+.subTotal, .bonusPoints,
+.grandTotal {
   min-height: $die-size;
   span {
     line-height: $die-size;

@@ -3,17 +3,17 @@ var Player   = require('./Player');
 
 var Points = React.createClass({
   render: function() {
-    var players       = this.props.players; //array of players
+    var players       = this.props.players;
     var onClick       = this.props.onClick;
 
     var points        = [];
 
-    players.forEach(function(player, index) {
+    for (var player in players) {
       points.push(
-        <Player key={index} playerKey={player.key} player={player}
+        <Player key={player} playerKey={player} player={players[player]}
           onClick={onClick} />
       );
-    });
+    }
 
     return (
       <div className="container">

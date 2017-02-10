@@ -5,19 +5,20 @@ var RowPoints = require('./RowPoints');
 
 var Row = React.createClass({
   render: function() {
-    var rowValue  = parseInt(this.props.rowValue); //this is the value of the row, eg. 1 to 6 in first section, or 3 of a kind in second section
-    var section   = parseInt(this.props.section); //this is the value of which section of the game the row refers to
-    var playerKey = parseInt(this.props.playerKey); //this is the player id (key)
-    var points    = this.props.points; //this is the value of the points for the row
-    var onClick   = this.props.onClick;
+    var numberOfDice  = parseInt(this.props.numberOfDice);
+    var rowValue      = parseInt(this.props.rowValue);
+    var section       = parseInt(this.props.section);
+    var playerKey     = parseInt(this.props.playerKey);
+    var points        = this.props.points;
+    var yahtzeeBonus  = this.props.yahtzeeBonus;
+    var onClick       = this.props.onClick;
 
     return (
       <div className="row">
         <RowName rowValue={rowValue} section={section} />
-        <DiceRow onClick={onClick} rowValue={rowValue}
-          section={section} playerKey={playerKey} />
-        <RowPoints rowValue={rowValue} section={section}
-          playerKey={playerKey} points={points} />
+        <DiceRow onClick={onClick} rowValue={rowValue} numberOfDice={numberOfDice}
+          section={section} playerKey={playerKey} yahtzeeBonus={yahtzeeBonus} />
+        <RowPoints points={points} />
       </div>
     );
   }
