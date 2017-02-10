@@ -108,7 +108,8 @@ var App = React.createClass({
   },
 
   onDieClick: function(e) {
-    var dieIdValues       = e.target.id.split('_');
+    var dieId             = e.target.id;
+    var dieIdValues       = dieId.split('_');
     var rowValue          = parseInt(dieIdValues[1]);
     var section           = parseInt(dieIdValues[2]);
     var dieValue          = section === 2 && (rowValue <= 1 || rowValue === 6) ?
@@ -120,20 +121,58 @@ var App = React.createClass({
     var playerSection     = player[section === 1 ?
                             'pointsUpperSection' : 'pointsLowerSection'];
     var row               = playerSection[rowValue];
+    var dieClass          = rowValue + '_' + section + '_' + playerKey;
 
     var points            = this.countPoints(section, rowValue, dieValue);
 
+    $("." + dieClass).removeClass("clickedDie");
+
     if (dieValue === 100) {
-      row.isYahtzee       = e.target.checked;
+      var isYahtzee       = e.target.checked;
+      var sectionPoints   = section === 1 ? 5 : 7;
+      var conditionsUpper = section === 1;
+      var conditionsLower = section === 2 && (rowValue > 1 && rowValue < 6);
+      var maxValueDie     = sectionPoints + "_" + dieClass;
+
+      row.isYahtzee       = isYahtzee;
+
+      if (conditionsUpper || conditionsLower) {
+        if (isYahtzee) {
+          row.points          = this.countPoints(section, rowValue, sectionPoints);
+          row.numberOfDice    = sectionPoints;
+          row.isLocked        = true;
+          $("#" + maxValueDie).addClass("clickedDie");
+        } else {
+          row.points          = 0;
+          row.numberOfDice    = -1;
+          row.isLocked        = false;
+          $("#" + maxValueDie).removeClass("clickedDie");
+        }
+      }
     } else if (section === 2 && rowValue === 6) {
       row.points          = points;
-      row.numberOfDice    = points;
+      row.numberOfDice    = dieValue;
     } else {
       row.points          = row.numberOfDice !== dieValue ? points : 0;
       //put conditional to check if it's hover on, off or click
       //save previous points somewhere to recall if hover off and not locked
       row.isLocked        = row.numberOfDice !== dieValue ? true : false;
       row.numberOfDice    = row.numberOfDice !== dieValue ? dieValue : -1;
+      row.isYahtzee       = (section === 1 && row.numberOfDice !== 5) ||
+                            (section === 2 && row.numberOfDice !== 7) ?
+                            false : row.isYahtzee;
+      $('#100_' + dieClass).prop('checked',
+                            (section === 1 && row.numberOfDice !== 5) ||
+                            (section === 2 && row.numberOfDice !== 7) ?
+                            false : $('100_' + dieClass).is(":checked"));
+      if (section === 2 && rowValue === 5 && (dieValue === 0 || row.isLocked === false)) {
+        player['pointsUpperSection'].forEach(function(row) {
+          row.isYahtzee = false;
+        });
+        player['pointsLowerSection'].forEach(function(row) {
+          row.isYahtzee = false;
+        });
+      }
     }
 
     player['subTotal']    = this.countSectionTotal(player['pointsUpperSection']);
@@ -141,6 +180,10 @@ var App = React.createClass({
     player['grandTotal']  = player['subTotal'] + player['bonusPoints'] +
                             this.countSectionTotal(player['pointsLowerSection']) +
                             this.countYahtzeeBonus(player);
+
+    row.numberOfDice !== -1 && dieValue !== 100 ?
+                                        $("#" + dieId).addClass("clickedDie") :
+                                        $("#" + dieId).removeClass("clickedDie");
 
     this.setState({
       players: players

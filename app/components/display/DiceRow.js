@@ -27,10 +27,10 @@ var DiceRow = React.createClass({
           )
         }
       } else {
-        var dieClass = 'slider_' + rowValue + '_' + section + '_' + playerKey;
+        var dieClass = rowValue + '_' + section + '_' + playerKey;
         diceRow.push(
           <input type="range" defaultValue="-1" min="-1" max="30"
-          onChange={onClick} key="6" className={dieClass + " slider"} id={dieClass} />
+          onChange={onClick} key="6" className={dieClass + " slider"} id={'slider_' + dieClass} />
         );
       }
     } else {
@@ -40,13 +40,13 @@ var DiceRow = React.createClass({
     //change this: it must still display checkbox if max is selected in first part and
     //full house, small straight and big straight. with sliders it must show all the time from 5 points
     //also, if yahtzee is selected and die other than max is clicked, yahtzee must be removed
-    //ideally when user clicks on yahtzee bonus the max points are awarded for fp, fh, ss and bs
-    if (yahtzeeBonus && !(section === 2 && rowValue === 5) && numberOfDice === -1) {
+    if (yahtzeeBonus && !(section === 2 && rowValue === 5)) {// && numberOfDice === -1) {
       var yahtzeeClass = '100_' + rowValue + '_' + section + '_' + playerKey;
       diceRow.push(
         <div className="dieYahtzeeBonus" key="dieYahtzeeBonus">
           <label>
-            <input type="checkbox" defaultValue="100" onClick={onClick} id={yahtzeeClass} />
+            <input type="checkbox" defaultValue="100" onClick={onClick}
+              id={yahtzeeClass} className={dieClass + " yahtzeeBonus"} />
             Y
           </label>
         </div>

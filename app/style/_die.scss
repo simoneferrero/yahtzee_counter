@@ -28,6 +28,12 @@
   }
 }
 
+.clickedDie {
+  @include die;
+  background-color: red;
+  opacity: 0.4;
+}
+
 //dieDots
 .dieGlyphicon {
   position: absolute;
