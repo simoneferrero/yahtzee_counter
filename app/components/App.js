@@ -6,7 +6,9 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       playerId: 1,
-      players: {}
+      players: {},
+      winner: 'Winner: -',
+      grandWinner: 'Total winner: -'
     };
   },
 
@@ -35,7 +37,8 @@ var App = React.createClass({
             isYahtzee: false
           };
         }),
-        grandTotal: 0
+        grandTotal: 0,
+        matchesWon: 0
       };
 
       var playerId = this.state.playerId + 1;
@@ -47,6 +50,61 @@ var App = React.createClass({
     }
 
     $("#newPlayer").val('').focus();
+
+    return this.state;
+  },
+
+  removePlayer: function(e) {
+    var players   = JSON.parse(JSON.stringify(this.state.players));
+    var playerKey = e.target.id.split('_')[1];
+
+    delete players[playerKey];
+
+    var winner    = this.getWinnersTextText(players);
+
+    this.setState({
+      players: players,
+      winner: winner
+    });
+  },
+
+  getWinnersTextText: function(players, grandWinner = false) {
+    var winnerKeys  = this.getHighestPoints(players, grandWinner);
+    var winnerText = grandWinner ? "Total winner" : "Winner";
+
+    if (winnerKeys.length === 0) {
+      return winnerText + ": -";
+    }
+
+    var namesArray = [];
+
+    winnerKeys.forEach((winnerKey) => {
+      namesArray.push(players[winnerKey].name);
+    });
+
+    winnerText += winnerKeys.length === 1 ? ": " : "s: ";
+
+
+    return winnerText + namesArray.join(", ");
+  },
+
+  getHighestPoints: function(players, matchesWon) {
+    var points          = 0;
+    var winnerKeys      = [];
+
+    for (var playerKey in players) {
+      var player        = players[playerKey];
+      var playerPoints  = matchesWon ? player.matchesWon : player.grandTotal;
+
+      if (points !== 0 && playerPoints === points) {
+        winnerKeys.push(playerKey);
+      } else if (player.grandTotal > points) {
+        winnerKeys      = [playerKey];
+        points          = playerPoints;
+      }
+    }
+
+    return winnerKeys;
   },
 
   countPoints: function(section, rowValue, dieValue) {
@@ -141,12 +199,10 @@ var App = React.createClass({
           row.points          = this.countPoints(section, rowValue, sectionPoints);
           row.numberOfDice    = sectionPoints;
           row.isLocked        = true;
-          $("#" + maxValueDie).addClass("clickedDie");
         } else {
           row.points          = 0;
           row.numberOfDice    = -1;
           row.isLocked        = false;
-          $("#" + maxValueDie).removeClass("clickedDie");
         }
       }
     } else if (section === 2 && rowValue === 6) {
@@ -154,17 +210,18 @@ var App = React.createClass({
       row.numberOfDice    = dieValue;
     } else {
       row.points          = row.numberOfDice !== dieValue ? points : 0;
-      //put conditional to check if it's hover on, off or click
-      //save previous points somewhere to recall if hover off and not locked
+
       row.isLocked        = row.numberOfDice !== dieValue ? true : false;
       row.numberOfDice    = row.numberOfDice !== dieValue ? dieValue : -1;
       row.isYahtzee       = (section === 1 && row.numberOfDice !== 5) ||
                             (section === 2 && row.numberOfDice !== 7) ?
                             false : row.isYahtzee;
+
+      var isChecked       = $('100_' + dieClass).is(":checked");
       $('#100_' + dieClass).prop('checked',
                             (section === 1 && row.numberOfDice !== 5) ||
                             (section === 2 && row.numberOfDice !== 7) ?
-                            false : $('100_' + dieClass).is(":checked"));
+                            false : isChecked);
       if (section === 2 && rowValue === 5 && (dieValue === 0 || row.isLocked === false)) {
         player['pointsUpperSection'].forEach(function(row) {
           row.isYahtzee = false;
@@ -172,6 +229,7 @@ var App = React.createClass({
         player['pointsLowerSection'].forEach(function(row) {
           row.isYahtzee = false;
         });
+        $('.yahtzeeBonus').prop('checked', false);
       }
     }
 
@@ -181,29 +239,35 @@ var App = React.createClass({
                             this.countSectionTotal(player['pointsLowerSection']) +
                             this.countYahtzeeBonus(player);
 
-    row.numberOfDice !== -1 && dieValue !== 100 ?
-                                        $("#" + dieId).addClass("clickedDie") :
-                                        $("#" + dieId).removeClass("clickedDie");
+    if (row.numberOfDice !== -1) {
+      for (var i = 0; i <= row.numberOfDice; i++) {
+        $("#" + i + "_" + dieClass).addClass("clickedDie");
+      }
+    } else {
+      $("." + dieClass).removeClass("clickedDie");
+    }
 
     this.setState({
-      players: players
+      players: players,
+      winner: this.getWinnersTextText(players)
     });
 
 
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
-    //console.log(this.state.players);
-  },
-
+  // componentDidUpdate: function(prevProps, prevState) {
+  // },
+  //
   render: function() {
-    var players   = JSON.parse(JSON.stringify(this.state.players));
-    var onClick   = this.onDieClick;
+    var players       = JSON.parse(JSON.stringify(this.state.players));
+    var winner        = this.state.winner;
+    var onClick       = this.onDieClick;
+    var removePlayer  = this.removePlayer;
 
     return (
       <div>
-        <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />
-        <Points players={players} onClick={onClick} />
+        <Jumbotron key="jumbotron" winner={winner} onClick={this.addNewPlayer} />
+        <Points players={players} onClick={onClick} removePlayer={removePlayer} />
       </div>
     );
   }

@@ -29,27 +29,36 @@ var DiceRow = React.createClass({
       } else {
         var dieClass = rowValue + '_' + section + '_' + playerKey;
         diceRow.push(
-          <input type="range" defaultValue="-1" min="-1" max="30"
-          onChange={onClick} key="6" className={dieClass + " slider"} id={'slider_' + dieClass} />
+          <div className=" col-xs-10" key={rowValue} >
+            <input type="range" defaultValue="-1" min="-1" max="30"
+            onChange={onClick} className={dieClass + " slider"}
+            id={'slider_' + dieClass} />
+          </div>
         );
       }
     } else {
       diceRow = 'There was an error loading information for this row';
     }
 
-    //change this: it must still display checkbox if max is selected in first part and
-    //full house, small straight and big straight. with sliders it must show all the time from 5 points
-    //also, if yahtzee is selected and die other than max is clicked, yahtzee must be removed
-    if (yahtzeeBonus && !(section === 2 && rowValue === 5)) {// && numberOfDice === -1) {
-      var yahtzeeClass = '100_' + rowValue + '_' + section + '_' + playerKey;
+    if (!(section === 2 && rowValue === 5)) {// && numberOfDice === -1) {
+      var yahtzeeClass    = '100_' + rowValue + '_' + section + '_' + playerKey;
+      var isEnabled       = yahtzeeBonus && (numberOfDice === -1 || numberOfDice >= 5);
+      var yahtzeeBonusDiv = isEnabled ? [
+        <input type="checkbox" defaultValue="100" onClick={onClick} key="yahtzeeBonusInput"
+          id={yahtzeeClass} className={dieClass + " yahtzeeBonus"} />
+      ] : [
+        <input type="checkbox" defaultValue="100" onClick={onClick} key="yahtzeeBonusInput"
+          id={yahtzeeClass} className={dieClass + " yahtzeeBonus"} disabled />
+      ];
+
       diceRow.push(
         <div className="dieYahtzeeBonus" key="dieYahtzeeBonus">
           <label>
-            <input type="checkbox" defaultValue="100" onClick={onClick}
-              id={yahtzeeClass} className={dieClass + " yahtzeeBonus"} />
+            {yahtzeeBonusDiv}
             Y
           </label>
         </div>
+
       );
     }
 
