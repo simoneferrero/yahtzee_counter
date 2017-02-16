@@ -7,8 +7,9 @@ var App = React.createClass({
     return {
       playerId: 1,
       players: {},
+      matchWinnerKeys: [],
       winner: 'Winner: -',
-      grandWinner: 'Total winner: -'
+      grandWinner: 'Total winner: -',
     };
   },
 
@@ -60,15 +61,75 @@ var App = React.createClass({
 
     delete players[playerKey];
 
-    var winner    = this.getWinnersTextText(players);
+    var winner    = this.getWinnersText(players);
+    var grandWinnersText = this.getWinnersText(players, true);
 
     this.setState({
       players: players,
-      winner: winner
+      winner: winner,
+      grandWinner: grandWinnersText
     });
   },
 
-  getWinnersTextText: function(players, grandWinner = false) {
+  resetPlayers: function(players) {
+    var resetPlayers = {};
+
+    for (var playerKey in players) {
+      var player = players[playerKey];
+      resetPlayers[playerKey] = {
+        name: player.name,
+        pointsUpperSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false,
+            isYahtzee: false
+          };
+        }),
+        subTotal: 0,
+        bonusPoints: 0,
+        pointsLowerSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false,
+            isYahtzee: false
+          };
+        }),
+        grandTotal: 0,
+        matchesWon: player.matchesWon
+      };
+    }
+
+    return resetPlayers;
+  },
+
+  setNewMatch: function(event) {
+    event.preventDefault();
+    var matchWinnerKeys = this.state.matchWinnerKeys;
+
+    if (matchWinnerKeys.length > 0) {
+      var players = JSON.parse(JSON.stringify(this.state.players));
+
+      matchWinnerKeys.forEach((winnerKey) => {
+        players[winnerKey].matchesWon++;
+      });
+
+      var resetPlayers = this.resetPlayers(players);
+      var winnersText = this.getWinnersText(resetPlayers);
+      var grandWinnersText = this.getWinnersText(players, true);
+
+      $('.dieCover').removeClass('clickedDie');
+
+      this.setState({
+        players: resetPlayers,
+        winner: winnersText,
+        grandWinner: grandWinnersText
+      });
+    }
+  },
+
+  getWinnersText: function(players, grandWinner = false) {
     var winnerKeys  = this.getHighestPoints(players, grandWinner);
     var winnerText = grandWinner ? "Total winner" : "Winner";
 
@@ -96,12 +157,21 @@ var App = React.createClass({
       var player        = players[playerKey];
       var playerPoints  = matchesWon ? player.matchesWon : player.grandTotal;
 
-      if (points !== 0 && playerPoints === points) {
-        winnerKeys.push(playerKey);
-      } else if (player.grandTotal > points) {
-        winnerKeys      = [playerKey];
-        points          = playerPoints;
+      if (playerPoints !== 0) {
+        if (playerPoints === points) {
+          winnerKeys.push(playerKey);
+        } else if (playerPoints > points) {
+          winnerKeys      = [playerKey];
+          points          = playerPoints;
+        }
       }
+    }
+
+
+    if (!matchesWon) {
+      this.setState({
+        matchWinnerKeys: winnerKeys
+      });
     }
 
     return winnerKeys;
@@ -249,24 +319,23 @@ var App = React.createClass({
 
     this.setState({
       players: players,
-      winner: this.getWinnersTextText(players)
+      winner: this.getWinnersText(players)
     });
 
 
   },
 
-  // componentDidUpdate: function(prevProps, prevState) {
-  // },
-  //
   render: function() {
     var players       = JSON.parse(JSON.stringify(this.state.players));
     var winner        = this.state.winner;
+    var grandWinner   = this.state.grandWinner;
     var onClick       = this.onDieClick;
     var removePlayer  = this.removePlayer;
 
     return (
       <div>
-        <Jumbotron key="jumbotron" winner={winner} onClick={this.addNewPlayer} />
+        <Jumbotron key="jumbotron" winner={winner} grandWinner={grandWinner}
+          onClick={this.addNewPlayer} newMatch={this.setNewMatch} />
         <Points players={players} onClick={onClick} removePlayer={removePlayer} />
       </div>
     );

@@ -50,8 +50,11 @@ var Player = React.createClass({
 
     return (
       <div className="col-xs-6">
-        <div className="row text-center" id={"player_" + playerKey} onClick={onClick}
-          onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</div>
+        <div className="row text-center">
+          <span id={"player_" + playerKey} onClick={onClick}
+            onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span> 
+          <span className="badge">Won: {player.matchesWon}</span>
+        </div>
           <DeleteAlert playerKey={playerKey} playerName={player.name}
             removePlayer={removePlayer} />
         {sectionsArray}

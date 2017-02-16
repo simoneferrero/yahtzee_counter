@@ -12,11 +12,6 @@ var AddPlayer = React.createClass({
           <button id="addMe" onClick={this.props.onClick}
              className="btn btn-primary col-xs-12">Add Player</button>
         </div>
-        <div className="row">
-          <div className="col-xs-12 text-center">
-            {this.props.winner}
-          </div>
-        </div>
       </form>
     );
 
