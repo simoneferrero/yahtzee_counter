@@ -24,6 +24,21 @@ var Player = React.createClass({
     $("#deleteAlert_" + playerKey).removeClass("hidden");
   },
 
+  getColumnSize: function() {
+    var numberOfPlayers = this.props.numberOfPlayers;
+    var columnSize      = 'col-xs-12';
+
+    if (numberOfPlayers >= 4) {
+      columnSize += ' col-sm-6 col-lg-4 col-xl-3';
+    } else if (numberOfPlayers >= 3) {
+      columnSize += ' col-sm-6 col-lg-4';
+    } else if (numberOfPlayers >= 2) {
+      columnSize += ' col-sm-6';
+    }
+
+    return columnSize;
+  },
+
   render: function() {
     var playerKey     = parseInt(this.props.playerKey);
     var player        = this.props.player;
@@ -35,6 +50,9 @@ var Player = React.createClass({
     var onMouseOut    = this.onMouseOutChangeName;
     var onClick       = this.onClickChangeName;
     var removePlayer  = this.props.removePlayer;
+    var columnSize    = this.getColumnSize();
+
+    console.log(columnSize);
 
     var sectionsArray = [];
 
@@ -49,10 +67,10 @@ var Player = React.createClass({
     }
 
     return (
-      <div className="col-xs-6">
-        <div className="row text-center">
+      <div className={columnSize}>
+        <div className="text-center">
           <span id={"player_" + playerKey} onClick={onClick}
-            onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span> 
+            onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span>
           <span className="badge">Won: {player.matchesWon}</span>
         </div>
           <DeleteAlert playerKey={playerKey} playerName={player.name}

@@ -25,10 +25,8 @@ var Section = React.createClass({
     }
 
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          {rowsArray}
-        </div>
+      <div>
+        {rowsArray}
       </div>
     );
   }

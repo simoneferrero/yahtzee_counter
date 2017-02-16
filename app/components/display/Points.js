@@ -3,24 +3,24 @@ var Player   = require('./Player');
 
 var Points = React.createClass({
   render: function() {
-    var players       = this.props.players;
-    var onClick       = this.props.onClick;
-    var removePlayer  = this.props.removePlayer;
+    var players         = this.props.players;
+    var numberOfPlayers = Object.keys(players).length;
+    var onClick         = this.props.onClick;
+    var removePlayer    = this.props.removePlayer;
 
-    var points        = [];
+    var points          = [];
 
     for (var player in players) {
       points.push(
         <Player key={player} playerKey={player} player={players[player]}
-          onClick={onClick} removePlayer={removePlayer} />
+          numberOfPlayers={numberOfPlayers} onClick={onClick}
+          removePlayer={removePlayer} />
       );
     }
 
     return (
       <div className="container">
-        <div className="row">
-          {points}
-        </div>
+        {points}
       </div>
     );
   }

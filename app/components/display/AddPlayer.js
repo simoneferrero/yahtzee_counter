@@ -6,11 +6,11 @@ var AddPlayer = React.createClass({
       <form>
         <div className="row">
           <input id="newPlayer" type="text" name="newPlayer" placeholder="Player Name"
-            className="col-xs-12 text-center" />
+            className="text-center" />
         </div>
         <div className="row">
           <button id="addMe" onClick={this.props.onClick}
-             className="btn btn-primary col-xs-12">Add Player</button>
+             className="btn btn-primary">Add Player</button>
         </div>
       </form>
     );
