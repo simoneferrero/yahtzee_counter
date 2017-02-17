@@ -4,7 +4,7 @@ var NewMatchAlert = React.createClass({
   onClickCloseAlert: function(event) {
     var onClick = this.props.onClick;
 
-    var startNewMatch = event.target.className === "newMatch";
+    var startNewMatch = event.target.className.includes("newMatch");
 
     $("#newMatchAlert").addClass("hidden");
     if (startNewMatch) onClick();
@@ -18,7 +18,7 @@ var NewMatchAlert = React.createClass({
           <button className="winner btn btn-danger newMatch" onClick={this.onClickCloseAlert}>
             Yes
           </button>
-          <button className="winner btn btn-primary noNewMatch" onClick={this.onClickCloseAlert}>
+          <button className="winner btn btn-primary" onClick={this.onClickCloseAlert}>
             No
           </button>
         </div>
