@@ -1,6 +1,7 @@
 var React     = require('react');
 var Jumbotron = require('./display/Jumbotron');
 var Points    = require('./display/Points');
+var NewMatchAlert = require('./display/NewMatchAlert');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -104,29 +105,26 @@ var App = React.createClass({
     return resetPlayers;
   },
 
-  setNewMatch: function(event) {
-    event.preventDefault();
+  setNewMatch: function() {
     var matchWinnerKeys = this.state.matchWinnerKeys;
 
-    if (matchWinnerKeys.length > 0) {
-      var players = JSON.parse(JSON.stringify(this.state.players));
+    var players = JSON.parse(JSON.stringify(this.state.players));
 
-      matchWinnerKeys.forEach((winnerKey) => {
-        players[winnerKey].matchesWon++;
-      });
+    matchWinnerKeys.forEach((winnerKey) => {
+      players[winnerKey].matchesWon++;
+    });
 
-      var resetPlayers = this.resetPlayers(players);
-      var winnersText = this.getWinnersText(resetPlayers);
-      var grandWinnersText = this.getWinnersText(players, true);
+    var resetPlayers = this.resetPlayers(players);
+    var winnersText = this.getWinnersText(resetPlayers);
+    var grandWinnersText = this.getWinnersText(players, true);
 
-      $('.dieCover').removeClass('clickedDie');
+    $('.dieCover').removeClass('clickedDie');
 
-      this.setState({
-        players: resetPlayers,
-        winner: winnersText,
-        grandWinner: grandWinnersText
-      });
-    }
+    this.setState({
+      players: resetPlayers,
+      winner: winnersText,
+      grandWinner: grandWinnersText
+    });
   },
 
   getWinnersText: function(players, grandWinner = false) {
@@ -326,16 +324,18 @@ var App = React.createClass({
   },
 
   render: function() {
-    var players       = JSON.parse(JSON.stringify(this.state.players));
-    var winner        = this.state.winner;
-    var grandWinner   = this.state.grandWinner;
-    var onClick       = this.onDieClick;
-    var removePlayer  = this.removePlayer;
+    var players         = JSON.parse(JSON.stringify(this.state.players));
+    var winner          = this.state.winner;
+    var grandWinner     = this.state.grandWinner;
+    var matchWinnerKeys = this.state.matchWinnerKeys.length > 0;
+    var onClick         = this.onDieClick;
+    var removePlayer    = this.removePlayer;
 
     return (
       <div>
         <Jumbotron key="jumbotron" winner={winner} grandWinner={grandWinner}
-          onClick={this.addNewPlayer} newMatch={this.setNewMatch} />
+          onClick={this.addNewPlayer} matchWinnerKeys={matchWinnerKeys} />
+        <NewMatchAlert onClick={this.setNewMatch} />
         <Points players={players} onClick={onClick} removePlayer={removePlayer} />
       </div>
     );

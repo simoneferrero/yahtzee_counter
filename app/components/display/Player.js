@@ -52,13 +52,13 @@ var Player = React.createClass({
     var removePlayer  = this.props.removePlayer;
     var columnSize    = this.getColumnSize();
 
-    console.log(columnSize);
-
     var sectionsArray = [];
 
     for (var i = 1; i <= 2; i++) {
+      var className = "sectionWrap " + (i === 1 ? 'upperSection' : 'lowerSection');
+
       sectionsArray.push(
-        <div className={i === 1 ? 'upperSection' : 'lowerSection'} key={i}>
+        <div className={className} key={i}>
           <Section section={i} playerKey={playerKey} onClick={onClickDie} yahtzeeBonus={yahtzeeBonus}
             sectionPoints={player[i === 1 ? 'pointsUpperSection' : 'pointsLowerSection']} />
           <Total section={i} player={player} />
@@ -68,14 +68,16 @@ var Player = React.createClass({
 
     return (
       <div className={columnSize}>
-        <div className="text-center">
-          <span id={"player_" + playerKey} onClick={onClick}
-            onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span>
-          <span className="badge">Won: {player.matchesWon}</span>
-        </div>
+        <div className="col-xs-10 col-xs-offset-1 player">
           <DeleteAlert playerKey={playerKey} playerName={player.name}
             removePlayer={removePlayer} />
-        {sectionsArray}
+          <div className="text-center playerNameWrap">
+            <span id={"player_" + playerKey} className="playerName" onClick={onClick}
+              onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span>
+            <span className="badge">Won: {player.matchesWon}</span>
+          </div>
+          {sectionsArray}
+        </div>
       </div>
     );
   }

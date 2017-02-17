@@ -13,14 +13,18 @@ var DeleteAlert = React.createClass({
     var removePlayer  = this.props.removePlayer;
 
     return (
-      <div className="alert alert-danger fade in hidden" id={"deleteAlert_" + playerKey}>
-        <strong>Warning:</strong> Do you want to delete player {playerName}?
+      <div className="alert alert-danger fade in text-center hidden deletePlayer"
+        id={"deleteAlert_" + playerKey}>
+        <strong>Warning:</strong> Do you want to delete player <strong>{playerName}</strong>?
         <div>
-          <span id={"removePlayer_" + playerKey} onClick={removePlayer}>
+          <button id={"removePlayer_" + playerKey} onClick={removePlayer}
+            className="winner btn btn-danger">
             Yes
-          </span> | <span onClick={this.onClickCloseAlert}>
+          </button>
+          <button onClick={this.onClickCloseAlert}
+            className="winner btn btn-primary">
             No
-          </span>
+          </button>
         </div>
       </div>
     );

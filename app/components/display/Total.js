@@ -15,25 +15,25 @@ var Total = React.createClass({
     if (section === 1) {
       total.push(
         <div className="row text-center" key="subTotal">
-          <div className="col-xs-10 subTotal">Sub Total</div>
+          <div className="col-xs-8 col-xs-offset-2 subTotal">Sub Total</div>
           <RowPoints points={subTotal} />
         </div>,
         <div className="row text-center" key="bonusPoints">
-          <div className="col-xs-10 bonusPoints">Bonus Points</div>
+          <div className="col-xs-8 col-xs-offset-2 bonusPoints">Bonus Points</div>
           <RowPoints points={bonusPoints} />
         </div>
       );
     } else {
       total.push(
         <div className="row text-center" key="grandTotal">
-          <div className="col-xs-10 grandTotal">Grand Total</div>
+          <div className="col-xs-8 col-xs-offset-2 grandTotal">Grand Total</div>
           <RowPoints points={grandTotal} />
         </div>
       );
     }
 
     return (
-      <div>{total}</div>
+      <div className="totalPoints">{total}</div>
     );
   }
 });

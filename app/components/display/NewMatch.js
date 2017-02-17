@@ -1,12 +1,17 @@
 var React = require('react');
 
 var NewMatch = React.createClass({
+  onClickOpenAlert: function(event) {
+    var matchWinnerKeys = this.props.matchWinnerKeys;
+
+    matchWinnerKeys ? $("#newMatchAlert").removeClass("hidden") : null;
+  },
+
   render: function() {
-    var onClick   = this.props.onClick;
     var newMatch  = (
-      <div className="row">
-        <button id="newMatch" onClick={onClick}
-           className="btn btn-primary col-xs-12">New Match</button>
+      <div className="text-right col-xs-5 col-xs-offset-2 formWrapper">
+        <button id="newMatch" onClick={this.onClickOpenAlert}
+           className="winner btn btn-danger">New<br />Match</button>
       </div>
     );
 

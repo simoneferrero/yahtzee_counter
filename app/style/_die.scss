@@ -12,6 +12,20 @@
 .dieYahtzeeBonus {
   @include die;
   margin: 0 auto;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+input[type=checkbox] {
+  margin: 0;
+  width: $die-size / 2;
+}
+
+label {
+  margin: 0 auto;
+  vertical-align: middle;
+  line-height: $die-size;
 }
 
 .dieCover {

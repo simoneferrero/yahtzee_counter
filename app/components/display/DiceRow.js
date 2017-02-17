@@ -9,6 +9,7 @@ var DiceRow = React.createClass({
     var playerKey     = parseInt(this.props.playerKey);
     var yahtzeeBonus  = this.props.yahtzeeBonus;
     var onClick       = this.props.onClick;
+    var dieClass      = rowValue + '_' + section + '_' + playerKey;
 
     var diceRow       = [];
     if (section === 1) {
@@ -27,7 +28,6 @@ var DiceRow = React.createClass({
           )
         }
       } else {
-        var dieClass = rowValue + '_' + section + '_' + playerKey;
         diceRow.push(
           <div className=" col-xs-10" key={rowValue} >
             <input type="range" defaultValue="-1" min="-1" max="30"
@@ -45,18 +45,16 @@ var DiceRow = React.createClass({
       var isEnabled       = yahtzeeBonus && (numberOfDice === -1 || numberOfDice >= 5);
       var yahtzeeBonusDiv = isEnabled ? [
         <input type="checkbox" defaultValue="100" onClick={onClick} key="yahtzeeBonusInput"
-          id={yahtzeeClass} className={dieClass + " yahtzeeBonus"} />
+          id={yahtzeeClass} className={dieClass + " yahtzeeBonus dieYahtzeeBonus"} />
       ] : [
         <input type="checkbox" defaultValue="100" onClick={onClick} key="yahtzeeBonusInput"
-          id={yahtzeeClass} className={dieClass + " yahtzeeBonus"} disabled />
+          id={yahtzeeClass} className={dieClass + " yahtzeeBonus dieYahtzeeBonus"} disabled />
       ];
 
       diceRow.push(
         <div className="dieYahtzeeBonus" key="dieYahtzeeBonus">
-          <label>
             {yahtzeeBonusDiv}
-            Y
-          </label>
+            <label>Y</label>
         </div>
 
       );
