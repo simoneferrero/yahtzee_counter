@@ -52,3 +52,67 @@
 .totalPoints {
   font-weight: 700;
 }
+
+.allPoints {
+  width: 100%;
+  padding: {
+    left: 0;
+    right: 0;
+  }
+}
+
+.playerColumn {
+  display: inline-block;
+}
+
+//media queries
+
+@media (max-width: 576px) {
+  .onePlayer, .twoPlayers,
+  .threePlayers, .fourPlayers {
+    width: 90%;
+  }
+ }
+
+@media (min-width: 577px) and (max-width: 850px) {
+  .onePlayer {
+    width: 80%;
+  }
+
+  .twoPlayers, .threePlayers,
+  .fourPlayers {
+    width: 50%;
+  }
+}
+
+@media (min-width: 851px) {
+  .onePlayer {
+    width: 70%;
+  }
+
+  .twoPlayers {
+    width: 50%;
+  }
+
+  .threePlayers, .fourPlayers {
+    width: 33%;
+  }
+}
+
+@media (min-width: 1450px) {
+  .onePlayer {
+    width: 40%;
+  }
+
+  .twoPlayers {
+    width: 50%;
+  }
+
+  .threePlayers {
+    width: 33%;
+  }
+
+  .fourPlayers {
+    width: 25%;
+  }
+}

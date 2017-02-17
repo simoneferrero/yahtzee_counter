@@ -26,14 +26,26 @@ var Player = React.createClass({
 
   getColumnSize: function() {
     var numberOfPlayers = this.props.numberOfPlayers;
-    var columnSize      = 'col-xs-12';
+    // var columnSize      = 'col-xs-12';
+    //
+    // if (numberOfPlayers >= 4) {
+    //   columnSize += ' col-sm-6 col-md-6 col-lg-4 col-xl-3';
+    // } else if (numberOfPlayers >= 3) {
+    //   columnSize += ' col-sm-6 col-md-6 col-lg-4';
+    // } else if (numberOfPlayers >= 2) {
+    //   columnSize += ' col-sm-6';
+    // }
+
+    var columnSize  = 'playerColumn ';
 
     if (numberOfPlayers >= 4) {
-      columnSize += ' col-sm-6 col-lg-4 col-xl-3';
-    } else if (numberOfPlayers >= 3) {
-      columnSize += ' col-sm-6 col-lg-4';
-    } else if (numberOfPlayers >= 2) {
-      columnSize += ' col-sm-6';
+      columnSize += 'fourPlayers';
+    } else if (numberOfPlayers === 3) {
+      columnSize += 'threePlayers';
+    } else if (numberOfPlayers === 2) {
+      columnSize += 'twoPlayers';
+    } else if (numberOfPlayers === 1) {
+      columnSize += 'onePlayer'
     }
 
     return columnSize;

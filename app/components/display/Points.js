@@ -19,7 +19,7 @@ var Points = React.createClass({
     }
 
     return (
-      <div className="container">
+      <div className="container allPoints">
         {points}
       </div>
     );
