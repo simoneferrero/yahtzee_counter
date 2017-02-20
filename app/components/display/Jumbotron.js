@@ -14,10 +14,12 @@ var Jumbotron = React.createClass({
         <div className="container">
           <div className="row">
             <div className="col-xs-8">
-              <span className="h1">Yahtzee Counter<br />
-                <small>{winner}</small><br />
-                <small>{grandWinner}</small>
-              </span>
+              {/* <div className="title"><span className="h1">Yahtzee Counter</span></div>
+              <div className="winner"><span className="h3">{winner}</span></div>
+              <div className="winner"><span className="h3">{grandWinner}</span></div> */}
+              <div className="title">Yahtzee Counter</div>
+              <div className="winner">{winner}</div>
+              <div className="winner">{grandWinner}</div>
             </div>
             <div className="col-xs-4">
               <AddPlayer onClick={onClick} />

@@ -11,7 +11,7 @@ var NewMatch = React.createClass({
     var newMatch  = (
       <div className="text-right col-xs-5 col-xs-offset-2 formWrapper">
         <button id="newMatch" onClick={this.onClickOpenAlert}
-           className="winner btn btn-danger">New<br />Match</button>
+           className="btn btn-danger">New<br />Match</button>
       </div>
     );
 

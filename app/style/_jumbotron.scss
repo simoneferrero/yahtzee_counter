@@ -2,86 +2,74 @@
 @import 'helpers/variables';
 @import 'helpers/placeholders';
 
-@media all and (max-width: 844px) {
 
-  .jumbotron {
-    height: $jumbotron-height;
-    padding: {
-      top: $winner-height / 2;
-      bottom: $winner-height / 2;
-    }
-
-    margin-bottom: 0;
-
-    .h1 {
-      font-size: 6vmax;
-      line-height: 4vmax;
-      margin-top: 1vmax;
-      position: absolute;
-
-      small {
-        font-size: 30%;
-      }
-    }
+.jumbotron {
+  height: $jumbotron-height;
+  padding: {
+    top: $jumbotron-unit;
+    bottom: $jumbotron-unit;
   }
+
+  margin-bottom: 0;
 }
 
-@media all and (min-width: 845px) {
-  .jumbotron {
-    height: $jumbotron-height;
-    padding: {
-      top: $winner-height / 2;
-      bottom: $winner-height / 2;
-    }
-
-    margin-bottom: 0;
-
-    .h1 {
-      font-size: 60px;
-      line-height: 30px;
-      margin-top: 10px  ;
-      position: absolute;
-
-      small {
-        font-size: 30%;
-      }
-    }
-  }
+.title {
+  height: $jumbotron-title-height;
+  font-weight: 700;
+  margin-bottom: $jumbotron-unit;
 }
 
 .winner {
-  margin: 0 auto;
-  height: $winner-height * 4 / 5;
+  height: $jumbotron-winner;
+  margin-bottom: $jumbotron-unit;
+  line-height: $jumbotron-winner-height;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: $jumbotron-title-font-size-s;
+    line-height: $jumbotron-title-height-s;
+  }
+
+  .winner {
+    font-size: $jumbotron-winner-s;
+  }
+}
+
+@media (min-width: 769px) {
+  .title {
+    font-size: $jumbotron-title-font-size;
+    line-height: $jumbotron-title-height;
+  }
+
+  .winner {
+    font-size: $jumbotron-winner;
+  }
+}
+
+.winnerText {
+  font-weight: 700;
+  color: red;
+}
+
+#newPlayerButton, #newMatch {
+  @extend %jumbotronForm;
+  height: $jumbotron-buttons;
+}
+
+#newPlayerText {
+  @extend %jumbotronForm;
+  height: $jumbotron-input;
+}
+
+.formWrapper {
+  padding: 0;
+  margin-bottom: $jumbotron-unit;
+}
+
+#newMatchAlert {
   width: 100%;
-  vertical-align: middle;
-  font-size: $winner-height / 2;
-    margin: {
-      top: $winner-height / 8;
-      bottom: $winner-height / 8;
-    }
-  }
-
-  button.winner, input.winner {
-    line-height: $winner-height / 2;
-  }
-
-  button.winner {
-    height: $winner-height * 8 / 5;
-    padding: 0;
-  }
-
-  .formWrapper {
-    padding: 0;
-  }
-
-  #newMatchAlert {
-    position: absolute;
-    top: $jumbotron-height / 2;
-    width: 80vw;
-    font-size: 30px;
-    margin: {
-      left: 10vw;
-      right: 10vw;
-    }
-    z-index: 1051;
-  }
+  font-size: $jumbotron-alert-text-size;
+  @include vertical-align(absolute);
+  z-index: 1051;
+}

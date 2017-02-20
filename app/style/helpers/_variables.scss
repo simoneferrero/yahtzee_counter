@@ -9,5 +9,19 @@ $diedot-border: 1px solid transparent;
 $diedot-border-distance: $die-size / 8;
 
 //jumbotron variables
-$jumbotron-height: 21vh;
-$winner-height: $jumbotron-height / 4;
+$jumbotron-unit: 12px;
+$jumbotron-height: $jumbotron-unit * 12;
+$jumbotron-buttons: $jumbotron-unit * 6;
+$jumbotron-input: $jumbotron-unit * 3;
+$jumbotron-form-text-size: $jumbotron-unit * 3 / 2;
+$jumbotron-form-line-height: $jumbotron-unit * 2;
+$jumbotron-alert-text-size: $jumbotron-unit * 3;
+
+$jumbotron-title-height: $jumbotron-unit * 4;
+$jumbotron-title-font-size: $jumbotron-unit * 5;
+$jumbotron-title-height-s: $jumbotron-unit * 7 / 3;
+$jumbotron-title-font-size-s: $jumbotron-unit * 3;
+
+$jumbotron-winner: $jumbotron-unit * 2;
+$jumbotron-winner-height: $jumbotron-unit * 5 / 2;
+$jumbotron-winner-s: $jumbotron-unit * 3 / 2;
