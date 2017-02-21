@@ -1,6 +1,17 @@
+//colors
+$white: rgb(255, 255, 255);
+$light-blue: rgb(128, 212, 255);
+$blue: rgba(0, 136, 204, 1);
+$dark-blue: rgb(0, 85, 128);
+$dark-blue-transparent: rgba(0, 85, 128, 0.5);
+
+//fonts
+$title-font: 'Righteous', cursive;
+$body-font: 'Titillium Web', sans-serif;
+
 //die variables
 $die-size: 24px;
-$die-border: 1px solid black;
+$die-border: 1px solid $white;
 
 //diedot variables
 $dienodot-size: ($die-size / 6) * 5;
@@ -9,7 +20,7 @@ $diedot-border: 1px solid transparent;
 $diedot-border-distance: $die-size / 8;
 
 //jumbotron variables
-$jumbotron-unit: 12px;
+$jumbotron-unit: 11px;
 $jumbotron-height: $jumbotron-unit * 12;
 $jumbotron-buttons: $jumbotron-unit * 6;
 $jumbotron-input: $jumbotron-unit * 3;
@@ -25,3 +36,8 @@ $jumbotron-title-font-size-s: $jumbotron-unit * 3;
 $jumbotron-winner: $jumbotron-unit * 2;
 $jumbotron-winner-height: $jumbotron-unit * 5 / 2;
 $jumbotron-winner-s: $jumbotron-unit * 3 / 2;
+
+//player variables
+$player-unit: 11px;
+$player-width: 450px;
+$player-alert-font-size: $player-unit * 5 / 2;

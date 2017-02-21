@@ -3,19 +3,8 @@
 %diedot {
   height: $diedot-size;
   width: $diedot-size;
-  background-color: black;
+  background-color: $white;
   position: absolute;
   @include border-radius(100%);
   @include user-select(none);
-}
-
-%jumbotronForm {
-  margin: 0 auto;
-  width: 100%;
-  vertical-align: middle;
-  font-size: $jumbotron-form-text-size;
-  line-height: $jumbotron-form-line-height;
-  padding: 0;
-  border: 0;
-  @include border-radius($jumbotron-unit / 2);
 }

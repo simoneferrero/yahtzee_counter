@@ -6,7 +6,6 @@
   @include die;
   border: $die-border;
   margin: 0 auto;
-  @include border-radius($die-size / 10);
 }
 
 .dieYahtzeeBonus {
@@ -16,11 +15,43 @@
   vertical-align: middle;
 }
 
-
-input[type=checkbox] {
-  margin: 0;
-  width: $die-size / 2;
+input[type="checkbox"]{
+  margin: 0 auto;
+  &:focus {
+    outline: 0;
+  }
 }
+
+input[type=checkbox][disabled]{
+  opacity: 0.5; // or whatever
+}
+
+.yahtzeeBonus {
+  @include checkbox-appearance;
+  @extend .die;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:after {
+    content: "Y";
+    font-family: $title-font;
+    font-weight: 900;
+  }
+  
+  &:checked {
+    background-color: $dark-blue;
+    opacity: 0.6;
+    border: 1px solid gray;
+    color: gray;
+  }
+}
+
+// input[type=checkbox] {
+//   margin: 0;
+//   width: $die-size / 2;
+// }
 
 label {
   margin: 0 auto;
@@ -44,8 +75,8 @@ label {
 
 .clickedDie {
   @include die;
-  background-color: red;
-  opacity: 0.4;
+  background-color: $dark-blue;
+  opacity: 0.6;
 }
 
 //dieDots

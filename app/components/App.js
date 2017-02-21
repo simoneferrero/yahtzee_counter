@@ -9,15 +9,16 @@ var App = React.createClass({
       playerId: 1,
       players: {},
       matchWinnerKeys: [],
-      winner: 'Winner: -',
+      winner: 'Match winner: -',
       grandWinner: 'Total winner: -',
     };
   },
 
   addNewPlayer: function(event) {
     event.preventDefault();
-    var playerName = $("#newPlayerText").val();
-    if (playerName !== "") {
+    var playerName = $("#newPlayerText").val().length <= 12 ?
+      $("#newPlayerText").val() : ($("#newPlayerText").val().substr(0,12) + "...");
+    if (playerName.trim() !== "") {
       var players = JSON.parse(JSON.stringify(this.state.players));
       players[this.state.playerId] = {
         name: playerName,
@@ -131,7 +132,7 @@ var App = React.createClass({
 
   getWinnersText: function(players, grandWinner = false) {
     var winnerKeys  = this.getHighestPoints(players, grandWinner);
-    var winnerText = grandWinner ? "Total winner" : "Winner";
+    var winnerText = (grandWinner ? "Total " : "Match ") + "winner";
 
     if (winnerKeys.length === 0) {
       return winnerText + ": -";
@@ -144,9 +145,6 @@ var App = React.createClass({
     });
 
     winnerText += (winnerKeys.length === 1 ? "" : "s") + ": ";
-
-    // return <span>{winnerText}
-
 
     return (
       <span>{winnerText}<span className='winnerText'>{namesArray.join(", ")}</span></span>

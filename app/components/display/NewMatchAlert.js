@@ -4,10 +4,12 @@ var NewMatchAlert = React.createClass({
   onClickCloseAlert: function(event) {
     var onClick = this.props.onClick;
 
-    var startNewMatch = event.target.className.includes("newMatch");
+    var startNewMatch = event.target.id === "newMatchButton";
 
     $("#newMatchAlert").addClass("hidden");
-    if (startNewMatch) onClick();
+    if (startNewMatch) {
+      onClick();
+    }
   },
 
   render: function() {
@@ -15,10 +17,12 @@ var NewMatchAlert = React.createClass({
       <div id="newMatchAlert" className="alert alert-danger fade in text-center hidden">
         <strong>Warning:</strong> All current points will be reset. Start new match?
         <div>
-          <button className="winner btn btn-danger newMatch" onClick={this.onClickCloseAlert}>
+          <button id="newMatchButton" className="alertButton btn btn-danger"
+            onClick={this.onClickCloseAlert}>
             Yes
           </button>
-          <button className="winner btn btn-primary" onClick={this.onClickCloseAlert}>
+          <button className="alertButton btn btn-primary"
+            onClick={this.onClickCloseAlert}>
             No
           </button>
         </div>

@@ -24,33 +24,6 @@ var Player = React.createClass({
     $("#deleteAlert_" + playerKey).removeClass("hidden");
   },
 
-  getColumnSize: function() {
-    var numberOfPlayers = this.props.numberOfPlayers;
-    // var columnSize      = 'col-xs-12';
-    //
-    // if (numberOfPlayers >= 4) {
-    //   columnSize += ' col-sm-6 col-md-6 col-lg-4 col-xl-3';
-    // } else if (numberOfPlayers >= 3) {
-    //   columnSize += ' col-sm-6 col-md-6 col-lg-4';
-    // } else if (numberOfPlayers >= 2) {
-    //   columnSize += ' col-sm-6';
-    // }
-
-    var columnSize  = 'playerColumn ';
-
-    if (numberOfPlayers >= 4) {
-      columnSize += 'fourPlayers';
-    } else if (numberOfPlayers === 3) {
-      columnSize += 'threePlayers';
-    } else if (numberOfPlayers === 2) {
-      columnSize += 'twoPlayers';
-    } else if (numberOfPlayers === 1) {
-      columnSize += 'onePlayer'
-    }
-
-    return columnSize;
-  },
-
   render: function() {
     var playerKey     = parseInt(this.props.playerKey);
     var player        = this.props.player;
@@ -62,12 +35,12 @@ var Player = React.createClass({
     var onMouseOut    = this.onMouseOutChangeName;
     var onClick       = this.onClickChangeName;
     var removePlayer  = this.props.removePlayer;
-    var columnSize    = this.getColumnSize();
 
     var sectionsArray = [];
 
     for (var i = 1; i <= 2; i++) {
-      var className = "sectionWrap " + (i === 1 ? 'upperSection' : 'lowerSection');
+      var className   = "sectionWrap " + (i === 1 ? 'upperSection' : 'lowerSection');
+      var playerName  = player.name.length <= 15 ? player.name : (player.name.substr(0,15) + "...");
 
       sectionsArray.push(
         <div className={className} key={i}>
@@ -79,14 +52,14 @@ var Player = React.createClass({
     }
 
     return (
-      <div className={columnSize}>
+      <div className="playerColumn">
         <div className="col-xs-10 col-xs-offset-1 player">
           <DeleteAlert playerKey={playerKey} playerName={player.name}
             removePlayer={removePlayer} />
           <div className="text-center playerNameWrap">
             <span id={"player_" + playerKey} className="playerName" onClick={onClick}
-              onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span>
-            <span className="badge">Won: {player.matchesWon}</span>
+              onMouseOver={onMouseOver} onMouseOut={onMouseOut}>{player.name}</span><br />
+            <span className="badge">Wins: {player.matchesWon}</span>
           </div>
           {sectionsArray}
         </div>

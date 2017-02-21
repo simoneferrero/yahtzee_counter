@@ -27,9 +27,62 @@
   -o-transform: translateY(-50%);
 }
 
+@mixin radial-gradient($color-1, $color-2) {
+  background: $color-1;
+  background: radial-gradient($color-1, $color-2);
+  background: -webkit-radial-gradient($color-1, $color-2);
+  background: -moz-radial-gradient($color-1, $color-2);
+  background: -ms-radial-gradient($color-1, $color-2);
+  background: -o-radial-gradient($color-1, $color-2);
+}
+
+@mixin linear-gradient($color-1, $color-2) {
+  background: $color-1;
+  background: linear-gradient($color-1 0, $color-2 100%);
+  background: -webkit-linear-gradient($color-1 0, $color-2 100%);
+  background: -moz-linear-gradient($color-1 0, $color-2 100%);
+  background: -ms-linear-gradient($color-1 0, $color-2 100%);
+  background: -o-linear-gradient($color-1 0, $color-2 100%);
+}
+
+@mixin placeholder-color($color) {
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+  &::-moz-placeholder {
+    color: $color;
+  }
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+  &:-o-placeholder {
+    color: $color;
+  }
+}
+
+@mixin checkbox-appearance($appearance: none) {
+  -webkit-appearance: $appearance;
+  -moz-appearance: $appearance;
+  -ms-appearance: $appearance;
+  -o-appearance: $appearance;
+}
+
 //die mixins
 @mixin die($position: relative) {
   height: $die-size;
   width: $die-size;
   position: $position;
+  @include border-radius($die-size / 10);
+}
+
+//jumbotron mixins
+@mixin jumbotronForm($font-size, $line-height) {
+  margin: 0 auto;
+  width: 100%;
+  vertical-align: middle;
+  font-size: $font-size;
+  line-height: $line-height;
+  padding: 0;
+  border: 0;
+  @include border-radius($jumbotron-unit / 2);
 }

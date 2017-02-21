@@ -54,7 +54,7 @@ var DiceRow = React.createClass({
       diceRow.push(
         <div className="dieYahtzeeBonus" key="dieYahtzeeBonus">
             {yahtzeeBonusDiv}
-            <label>Y</label>
+            {/* <label>Y</label> */}
         </div>
 
       );

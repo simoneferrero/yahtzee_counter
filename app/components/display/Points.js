@@ -19,7 +19,7 @@ var Points = React.createClass({
     }
 
     return (
-      <div className="container allPoints">
+      <div className="container allPoint text-center">
         {points}
       </div>
     );

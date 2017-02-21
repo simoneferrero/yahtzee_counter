@@ -2,65 +2,70 @@
 @import 'helpers/variables';
 @import 'helpers/placeholders';
 
-.player {
-  margin: {
-    top: 10px;
-    bottom: 10px;
-  }
-  position: relative;
-  border: 1px solid black;
-  @include border-radius(2vmax);
+#app {
+  height: 100vh;
+  overflow-y: auto;
+  font-family: $body-font;
+  @include linear-gradient($light-blue, $dark-blue);
 }
 
 .badge {
-  position: absolute;
-  margin: {
-    left: 10px;
-    right: 10px;
-    top: 5px;
-  }
+  background-color: $dark-blue;
+  margin-top: -$player-unit / 2;
+}
+
+.player {
+  margin-top: $player-unit;
+  position: relative;
+  color: $white;
+  @include border-radius($player-unit);
 }
 
 .playerName {
   cursor: pointer;
   font-size: 20px;
   font-weight: 700;
+  font-family: $title-font;
 }
 
 .playerNameWrap, .sectionWrap {
   padding: 1px;
   margin: 2px;
-  border: 1px solid black;
-  @include border-radius(2vmax);
+  border: 2px solid $white;
+  @include border-radius($player-unit);
+  @include radial-gradient($light-blue, $blue);
 }
 
 .deleteName {
-  color: red;
+  color: $dark-blue;
 }
 
 .deletePlayer {
-  position: absolute;
   width: 90%;
-  margin: {
-    left: 5%;
-    right: 5%;
-  }
+  margin-left: -45%;
+  left: 50%;
   z-index: 1050;
-  font-size: 20px;
+  font-size: $player-alert-font-size;
+  white-space: normal;
+  @include vertical-align(absolute);
+  border: 0;
+}
+
+.removePlayer {
+  margin-top: $player-unit;
 }
 
 .totalPoints {
   font-weight: 700;
 }
 
-.allPoints {
-  width: 100%;
-  padding: {
-    left: 0;
-    right: 0;
-  }
+.allPoint {
+  width: auto;
+  padding-top: $jumbotron-height;
+  white-space: nowrap;
 }
 
 .playerColumn {
   display: inline-block;
+  width: $player-width;
 }

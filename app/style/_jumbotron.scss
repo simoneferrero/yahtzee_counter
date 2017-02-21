@@ -9,14 +9,20 @@
     top: $jumbotron-unit;
     bottom: $jumbotron-unit;
   }
-
+  color: $white;
+  position: fixed;
   margin-bottom: 0;
+  width: 100%;
+  z-index: 1501;
+  background-color: $blue;
+  border-bottom: 2px solid $dark-blue;
 }
 
 .title {
   height: $jumbotron-title-height;
   font-weight: 700;
   margin-bottom: $jumbotron-unit;
+  font-family: $title-font;
 }
 
 .winner {
@@ -49,17 +55,20 @@
 
 .winnerText {
   font-weight: 700;
-  color: red;
+  color: $light-blue;
 }
 
 #newPlayerButton, #newMatch {
-  @extend %jumbotronForm;
+  @include jumbotronForm($jumbotron-form-text-size, $jumbotron-form-line-height);
   height: $jumbotron-buttons;
 }
 
 #newPlayerText {
-  @extend %jumbotronForm;
+  @include jumbotronForm($jumbotron-form-text-size, $jumbotron-form-line-height);
   height: $jumbotron-input;
+  color: $dark-blue;
+
+  @include placeholder-color($dark-blue-transparent);
 }
 
 .formWrapper {
@@ -70,6 +79,16 @@
 #newMatchAlert {
   width: 100%;
   font-size: $jumbotron-alert-text-size;
-  @include vertical-align(absolute);
+  @include vertical-align(fixed);
   z-index: 1051;
+  border: 0;
+}
+
+.alertButton {
+  @include jumbotronForm(inherit, inherit);
+  height: $jumbotron-buttons;
+}
+
+#newMatchButton {
+  margin-bottom: $jumbotron-unit;
 }
