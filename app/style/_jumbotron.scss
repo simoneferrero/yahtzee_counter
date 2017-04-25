@@ -1,0 +1,94 @@
+@import 'helpers/mixins';
+@import 'helpers/variables';
+@import 'helpers/placeholders';
+
+
+.jumbotron {
+  height: $jumbotron-height;
+  padding: {
+    top: $jumbotron-unit;
+    bottom: $jumbotron-unit;
+  }
+  color: $white;
+  position: fixed;
+  margin-bottom: 0;
+  width: 100%;
+  z-index: 1501;
+  background-color: $blue;
+  border-bottom: 2px solid $dark-blue;
+}
+
+.title {
+  height: $jumbotron-title-height;
+  font-weight: 700;
+  margin-bottom: $jumbotron-unit;
+  font-family: $title-font;
+}
+
+.winner {
+  height: $jumbotron-winner;
+  margin-bottom: $jumbotron-unit;
+  line-height: $jumbotron-winner-height;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: $jumbotron-title-font-size-s;
+    line-height: $jumbotron-title-height-s;
+  }
+
+  .winner {
+    font-size: $jumbotron-winner-s;
+  }
+}
+
+@media (min-width: 769px) {
+  .title {
+    font-size: $jumbotron-title-font-size;
+    line-height: $jumbotron-title-height;
+  }
+
+  .winner {
+    font-size: $jumbotron-winner;
+  }
+}
+
+.winnerText {
+  font-weight: 700;
+  color: $light-blue;
+}
+
+#newPlayerButton, #newMatch {
+  @include jumbotronForm($jumbotron-form-text-size, $jumbotron-form-line-height);
+  height: $jumbotron-buttons;
+}
+
+#newPlayerText {
+  @include jumbotronForm($jumbotron-form-text-size, $jumbotron-form-line-height);
+  height: $jumbotron-input;
+  color: $dark-blue;
+
+  @include placeholder-color($dark-blue-transparent);
+}
+
+.formWrapper {
+  padding: 0;
+  margin-bottom: $jumbotron-unit;
+}
+
+#newMatchAlert {
+  width: 100%;
+  font-size: $jumbotron-alert-text-size;
+  @include vertical-align(fixed);
+  z-index: 1051;
+  border: 0;
+}
+
+.alertButton {
+  @include jumbotronForm(inherit, inherit);
+  height: $jumbotron-buttons;
+}
+
+#newMatchButton {
+  margin-bottom: $jumbotron-unit;
+}

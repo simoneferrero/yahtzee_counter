@@ -1,0 +1,141 @@
+@import 'helpers/mixins';
+@import 'helpers/variables';
+@import 'helpers/placeholders';
+
+.die {
+  @include die;
+  border: $die-border;
+  margin: 0 auto;
+}
+
+.dieYahtzeeBonus {
+  @include die;
+  margin: 0 auto;
+  text-align: center;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]{
+  margin: 0 auto;
+  &:focus {
+    outline: 0;
+  }
+}
+
+input[type=checkbox][disabled]{
+  opacity: 0.5; // or whatever
+}
+
+.yahtzeeBonus {
+  @include checkbox-appearance;
+  @extend .die;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:after {
+    content: "Y";
+    font-family: $title-font;
+    font-weight: 900;
+  }
+  
+  &:checked {
+    background-color: $dark-blue;
+    opacity: 0.6;
+    border: 1px solid gray;
+    color: gray;
+  }
+}
+
+// input[type=checkbox] {
+//   margin: 0;
+//   width: $die-size / 2;
+// }
+
+label {
+  margin: 0 auto;
+  vertical-align: middle;
+  line-height: $die-size;
+}
+
+.dieCover {
+  @include die(absolute);
+  background-color: transparent;
+  z-index: 999;
+  margin: {
+    top: -1px;
+    left: -1px;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.clickedDie {
+  @include die;
+  background-color: $dark-blue;
+  opacity: 0.6;
+}
+
+//dieDots
+.dieGlyphicon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include user-select(none);
+  font-size: $dienodot-size;
+  margin: {
+    top: -$dienodot-size/2;
+    left: -$dienodot-size/2;
+  }
+}
+
+.dieDotTopLeft {
+  @extend %diedot;
+  top: $diedot-border-distance;
+  left: $diedot-border-distance;
+}
+
+.dieDotTopCenter {
+  @extend %diedot;
+  top: $diedot-border-distance;
+  left: 50%;
+  margin-left: -$diedot-size/2;
+}
+
+.dieDotTopRight {
+  @extend %diedot;
+  top: $diedot-border-distance;
+  right: $diedot-border-distance;
+}
+
+.dieDotBottomLeft {
+  @extend %diedot;
+  bottom: $diedot-border-distance;
+  left: $diedot-border-distance;
+}
+
+.dieDotBottomCenter {
+  @extend %diedot;
+  bottom: $diedot-border-distance;
+  left: 50%;
+  margin-left: -$diedot-size/2;
+}
+
+.dieDotBottomRight {
+  @extend %diedot;
+  bottom: $diedot-border-distance;
+  right: $diedot-border-distance;
+}
+
+.dieDotCenter {
+  @extend %diedot;
+  top: 50%;
+  left: 50%;
+  margin: {
+    top: -$diedot-size/2;
+    left: -$diedot-size/2;
+  }
+}

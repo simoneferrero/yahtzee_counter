@@ -1,0 +1,34 @@
+@import 'helpers/mixins';
+@import 'helpers/variables';
+@import 'helpers/placeholders';
+
+.diceRow, .rowName, .rowPoints,
+.subTotal, .bonusPoints,
+.grandTotal {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: {
+    top: 5px;
+    bottom: 5px;
+  }
+}
+
+.rowName, .rowPoints,
+.subTotal, .bonusPoints,
+.grandTotal {
+  min-height: $die-size;
+  span {
+    line-height: $die-size;
+    font-size: $die-size / 3;
+  }
+}
+
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4,
+.col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8,
+.col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+  padding: {
+    right: 5px;
+    left: 5px;
+  }
+}

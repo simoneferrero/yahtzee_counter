@@ -1,239 +1,348 @@
-var React = require('react');
+var React     = require('react');
 var Jumbotron = require('./display/Jumbotron');
-var TempName = require('./display/tempName');
-var FirstPart = require('./display/FirstPart');
+var Points    = require('./display/Points');
+var NewMatchAlert = require('./display/NewMatchAlert');
 
 var App = React.createClass({
   getInitialState: function() {
     return {
       playerId: 1,
-      players: [],
-      columnSizes: [
-        "col-xs-12",
-        "col-xs-6",
-        "col-xs-6 col-sm-4",
-        "col-xs-6 col-sm-3",
-        "col-xs-6 col-sm-3 col-md-2"
-      ],
-      chosenColumnSize: ''
+      players: {},
+      matchWinnerKeys: [],
+      winner: 'Match winner: -',
+      grandWinner: 'Total winner: -',
     };
-  },
-
-  //this must be refactored, it's just an idea
-  sumFirstPartPoints: function(player) {
-    var pointsArray = [player.s1, player.s2, player.s3, player.s4, player.s5, player.s6];
-    var pointsSum = 0;
-
-    pointsArray.forEach(function(item, index) {
-      if (item >= 0) {
-        pointsSum += item;
-      }
-    });
-
-    return pointsSum;
-  },
-
-  updateBonus: function(player) {
-    return player.firstPartSum >= 63 ? 35 : 0
-  },
-
-  updateTotal: function(player) {
-    var pointsArray = [player.firstPartSum, player.bonusPoints, player.toak, player.foak, player.fh, player.ss, player.ls, player.yaht, player.chance];
-    var total = 0;
-
-    pointsArray.forEach(function(item, index) {
-      if (item >= 0) {
-        total += item;
-      }
-    });
-
-    return total;
   },
 
   addNewPlayer: function(event) {
     event.preventDefault();
-    var playerName = $("#newPlayer").val();
-    var player = {
-      key: this.state.playerId,
-      name: playerName,
-      s1: -1,
-      s1locked: false,
-      s2: -1,
-      s2locked: false,
-      s3: -1,
-      s3locked: false,
-      s4: -1,
-      s4locked: false,
-      s5: -1,
-      s5locked: false,
-      s6: -1,
-      s6locked: false,
-      firstPartSum: 0,
-      bonusPoints: 0,
-      toak: -1,
-      foak: -1,
-      fh: -1,
-      ss: -1,
-      ls: -1,
-      yaht: -1,
-      chance: -1,
-      grandTotal: 0
-    };
-    if (playerName !== "") {
+    var playerName = $("#newPlayerText").val().length <= 12 ?
+      $("#newPlayerText").val() : ($("#newPlayerText").val().substr(0,12) + "...");
+    if (playerName.trim() !== "") {
+      var players = JSON.parse(JSON.stringify(this.state.players));
+      players[this.state.playerId] = {
+        name: playerName,
+        pointsUpperSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false,
+            isYahtzee: false
+          };
+        }),
+        subTotal: 0,
+        bonusPoints: 0,
+        pointsLowerSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false,
+            isYahtzee: false
+          };
+        }),
+        grandTotal: 0,
+        matchesWon: 0
+      };
+
+      var playerId = this.state.playerId + 1;
+
       this.setState({
-        players: this.state.players.concat(player),
-        playerId: this.state.playerId + 1
+        players: players,
+        playerId: playerId
       });
     }
 
-    $("#newPlayer").val('').focus();
+    $("#newPlayerText")
+      .val('')
+      .focus();
+
+    return this.state;
   },
 
-  onDieMouseOver: function(e) {
-    var players = this.state.players;
-    var dieInfo = e.target.className.split(" ")[1].split("_");
+  removePlayer: function(e) {
+    var players   = JSON.parse(JSON.stringify(this.state.players));
+    var playerKey = e.target.id.split('_')[1];
 
-    var numberOfDice = parseInt(dieInfo[0]);
-    var dieFace = dieInfo[1];
-    var dieFaceIndex = "s" + dieInfo[1];
-    var player = dieInfo[2];
-    var dieRowLock = "s" + dieInfo[1] + "locked";
+    delete players[playerKey];
 
-    var rowHighlighted = "";
-    for (var j = 0; j <= numberOfDice; j++) {
-      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
-      if (j != numberOfDice) {
-        rowHighlighted += ", ";
-      }
-    }
-
-    for (var i = 0; i < players.length; i++) {
-      if (player == players[i].key && players[i][dieRowLock] === false) {
-        $("." + dieFace + "_" + player).removeClass("highlightedDie");//removes all highlighted elements from row
-        if (players[i][dieFaceIndex] != numberOfDice * dieFace) {//checks if value was already selected
-          players[i][dieFaceIndex] = numberOfDice * dieFace;
-          $(rowHighlighted).addClass("highlightedDie");
-        } else {//if it was selected, it reverts to default
-          players[i][dieFaceIndex] = -1;
-        }
-        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
-        players[i].bonusPoints = this.updateBonus(players[i]);
-        players[i].grandTotal = this.updateTotal(players[i]);
-
-        this.setState({
-          players: players
-        });
-      }
-    }
-  },
-
-  onDieMouseOut: function(e) {
-    var players = this.state.players;
-    var dieInfo = e.target.className.split(" ")[1].split("_");
-
-    var numberOfDice = parseInt(dieInfo[0]);
-    var dieFace = dieInfo[1];
-    var dieFaceIndex = "s" + dieInfo[1];
-    var player = dieInfo[2];
-    var dieRowLock = "s" + dieInfo[1] + "locked";
-
-    var rowHighlighted = "";
-    for (var j = 0; j <= numberOfDice; j++) {
-      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
-      if (j != numberOfDice) {
-        rowHighlighted += ", ";
-      }
-    }
-
-    for (var i = 0; i < players.length; i++) {
-      if (player == players[i].key && players[i][dieRowLock] === false) {
-        $("." + dieFace + "_" + player).removeClass("highlightedDie");
-        players[i][dieFaceIndex] = -1;
-        players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
-        players[i].bonusPoints = this.updateBonus(players[i]);
-        players[i].grandTotal = this.updateTotal(players[i]);
-
-        this.setState({
-          players: players
-        });
-      }
-    }
-  },
-
-  onDieClick: function(e) {
-    var players = this.state.players;
-    var dieInfo = e.target.className.split(" ")[1].split("_");
-
-    var numberOfDice = parseInt(dieInfo[0]);
-    var dieFace = dieInfo[1];
-    var dieFaceIndex = "s" + dieInfo[1];
-    var player = dieInfo[2];
-    var dieRowLock = "s" + dieInfo[1] + "locked";
-
-    var rowHighlighted = "";
-    for (var j = 0; j <= numberOfDice; j++) {
-      rowHighlighted += "." + j + "_" + dieFace + "_" + player;
-      if (j != numberOfDice) {
-        rowHighlighted += ", ";
-      }
-    }
-
-    for (var i = 0; i < players.length; i++) {
-      if (player == players[i].key && players[i][dieRowLock] === true) {
-        $("." + dieFace + "_" + player).removeClass("highlightedDie");//removes all highlighted elements from row
-        if (players[i][dieFaceIndex] != numberOfDice * dieFace) {//checks if value was already selected
-          players[i][dieFaceIndex] = numberOfDice * dieFace;
-          $(rowHighlighted).addClass("highlightedDie");
-        } else {//if it was selected, it reverts to default
-          players[i][dieFaceIndex] = -1;
-          players[i][dieRowLock] = false;
-        }
-      } else {
-        players[i][dieRowLock] = true;
-      }
-      players[i].firstPartSum = this.sumFirstPartPoints(players[i]);
-      players[i].bonusPoints = this.updateBonus(players[i]);
-      players[i].grandTotal = this.updateTotal(players[i]);
-    }
+    var winner    = this.getWinnersText(players);
+    var grandWinnersText = this.getWinnersText(players, true);
 
     this.setState({
-      players: players
+      players: players,
+      winner: winner,
+      grandWinner: grandWinnersText
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
-    var playersLength = this.state.players.length;
-    var columnSizes = this.state.columnSizes;
+  resetPlayers: function(players) {
+    var resetPlayers = {};
 
-    if (playersLength !== prevState.players.length) {
-      var chosenColumnSize = '';
-
-      if (playersLength === 1) {
-        chosenColumnSize = columnSizes[0];
-      } else if (playersLength === 2) {
-        chosenColumnSize = columnSizes[1];
-      } else if (playersLength === 3) {
-        chosenColumnSize = columnSizes[2];
-      } else if (playersLength === 4) {
-        chosenColumnSize = columnSizes[3];
-      } else if (playersLength > 4) {
-        chosenColumnSize = columnSizes[4];
-      }
-
-      this.setState({
-        chosenColumnSize: chosenColumnSize + " container text-center"
-      });
+    for (var playerKey in players) {
+      var player = players[playerKey];
+      resetPlayers[playerKey] = {
+        name: player.name,
+        pointsUpperSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false,
+            isYahtzee: false
+          };
+        }),
+        subTotal: 0,
+        bonusPoints: 0,
+        pointsLowerSection: Array.apply(null, Array(7)).map(function() {
+          return {
+            numberOfDice: -1,
+            points: 0,
+            isLocked: false,
+            isYahtzee: false
+          };
+        }),
+        grandTotal: 0,
+        matchesWon: player.matchesWon
+      };
     }
+
+    return resetPlayers;
   },
 
+  setNewMatch: function() {
+    var matchWinnerKeys = this.state.matchWinnerKeys;
+
+    var players = JSON.parse(JSON.stringify(this.state.players));
+
+    matchWinnerKeys.forEach((winnerKey) => {
+      players[winnerKey].matchesWon++;
+    });
+
+    var resetPlayers = this.resetPlayers(players);
+    var winnersText = this.getWinnersText(resetPlayers);
+    var grandWinnersText = this.getWinnersText(players, true);
+
+    $('.dieCover').removeClass('clickedDie');
+
+    this.setState({
+      players: resetPlayers,
+      winner: winnersText,
+      grandWinner: grandWinnersText
+    });
+  },
+
+  getWinnersText: function(players, grandWinner = false) {
+    var winnerKeys  = this.getHighestPoints(players, grandWinner);
+    var winnerText = (grandWinner ? "Total " : "Match ") + "winner";
+
+    if (winnerKeys.length === 0) {
+      return winnerText + ": -";
+    }
+
+    var namesArray = [];
+
+    winnerKeys.forEach((winnerKey) => {
+      namesArray.push(players[winnerKey].name);
+    });
+
+    winnerText += (winnerKeys.length === 1 ? "" : "s") + ": ";
+
+    return (
+      <span>{winnerText}<span className='winnerText'>{namesArray.join(", ")}</span></span>
+    );
+  },
+
+  getHighestPoints: function(players, matchesWon) {
+    var points          = 0;
+    var winnerKeys      = [];
+
+    for (var playerKey in players) {
+      var player        = players[playerKey];
+      var playerPoints  = matchesWon ? player.matchesWon : player.grandTotal;
+
+      if (playerPoints !== 0) {
+        if (playerPoints === points) {
+          winnerKeys.push(playerKey);
+        } else if (playerPoints > points) {
+          winnerKeys      = [playerKey];
+          points          = playerPoints;
+        }
+      }
+    }
+
+
+    if (!matchesWon) {
+      this.setState({
+        matchWinnerKeys: winnerKeys
+      });
+    }
+
+    return winnerKeys;
+  },
+
+  countPoints: function(section, rowValue, dieValue) {
+    var points;
+
+    if (section === 1) {
+      points = rowValue * dieValue;
+    } else if (section === 2) {
+      switch (rowValue) {
+        case 2:
+          points = dieValue === 0 ? 0 : 25;
+          break;
+        case 3:
+          points = dieValue === 0 ? 0 : 30;
+          break;
+        case 4:
+          points = dieValue === 0 ? 0 : 40;
+          break;
+        case 5:
+          points = dieValue === 0 ? 0 : 50;
+          break;
+        default:
+          points = dieValue;
+          break;
+      }
+    }
+
+    return points;
+  },
+
+  countSectionTotal: function(playerSection) {
+    var sectionTotal = 0;
+
+    playerSection.forEach(function(row) {
+      if (row['numberOfDice'] !== -1) {
+        sectionTotal += row['points'];
+      }
+    });
+
+    return sectionTotal;
+  },
+
+  countYahtzeeBonus: function(player) {
+    var yahtzeeBonus = 0;
+
+    player['pointsUpperSection'].forEach(function(row) {
+      if (row['isYahtzee']) {
+        yahtzeeBonus += 100;
+      }
+    });
+
+    player['pointsLowerSection'].forEach(function(row) {
+      if (row['isYahtzee']) {
+        yahtzeeBonus += 100;
+      }
+    });
+
+    return yahtzeeBonus;
+  },
+
+  onDieClick: function(e) {
+    var dieId             = e.target.id;
+    var dieIdValues       = dieId.split('_');
+    var rowValue          = parseInt(dieIdValues[1]);
+    var section           = parseInt(dieIdValues[2]);
+    var dieValue          = section === 2 && (rowValue <= 1 || rowValue === 6) ?
+                            parseInt(e.target.value) : parseInt(dieIdValues[0]);
+    var playerKey         = parseInt(dieIdValues[3]);
+
+    var players           = JSON.parse(JSON.stringify(this.state.players));
+    var player            = players[playerKey];
+    var playerSection     = player[section === 1 ?
+                            'pointsUpperSection' : 'pointsLowerSection'];
+    var row               = playerSection[rowValue];
+    var dieClass          = rowValue + '_' + section + '_' + playerKey;
+
+    var points            = this.countPoints(section, rowValue, dieValue);
+
+    $("." + dieClass).removeClass("clickedDie");
+
+    if (dieValue === 100) {
+      var isYahtzee       = e.target.checked;
+      var sectionPoints   = section === 1 ? 5 : 7;
+      var conditionsUpper = section === 1;
+      var conditionsLower = section === 2 && (rowValue > 1 && rowValue < 6);
+      var maxValueDie     = sectionPoints + "_" + dieClass;
+
+      row.isYahtzee       = isYahtzee;
+
+      if (conditionsUpper || conditionsLower) {
+        if (isYahtzee) {
+          row.points          = this.countPoints(section, rowValue, sectionPoints);
+          row.numberOfDice    = sectionPoints;
+          row.isLocked        = true;
+        } else {
+          row.points          = 0;
+          row.numberOfDice    = -1;
+          row.isLocked        = false;
+        }
+      }
+    } else if (section === 2 && rowValue === 6) {
+      row.points          = points;
+      row.numberOfDice    = dieValue;
+    } else {
+      row.points          = row.numberOfDice !== dieValue ? points : 0;
+
+      row.isLocked        = row.numberOfDice !== dieValue ? true : false;
+      row.numberOfDice    = row.numberOfDice !== dieValue ? dieValue : -1;
+      row.isYahtzee       = (section === 1 && row.numberOfDice !== 5) ||
+                            (section === 2 && row.numberOfDice !== 7) ?
+                            false : row.isYahtzee;
+
+      var isChecked       = $('100_' + dieClass).is(":checked");
+      $('#100_' + dieClass).prop('checked',
+                            (section === 1 && row.numberOfDice !== 5) ||
+                            (section === 2 && row.numberOfDice !== 7) ?
+                            false : isChecked);
+      if (section === 2 && rowValue === 5 && (dieValue === 0 || row.isLocked === false)) {
+        player['pointsUpperSection'].forEach(function(row) {
+          row.isYahtzee = false;
+        });
+        player['pointsLowerSection'].forEach(function(row) {
+          row.isYahtzee = false;
+        });
+        $('.yahtzeeBonus').prop('checked', false);
+      }
+    }
+
+    player['subTotal']    = this.countSectionTotal(player['pointsUpperSection']);
+    player['bonusPoints'] = player['subTotal'] >= 63 ? 35 : 0;
+    player['grandTotal']  = player['subTotal'] + player['bonusPoints'] +
+                            this.countSectionTotal(player['pointsLowerSection']) +
+                            this.countYahtzeeBonus(player);
+
+    if (row.numberOfDice !== -1) {
+      for (var i = 0; i <= row.numberOfDice; i++) {
+        $("#" + i + "_" + dieClass).addClass("clickedDie");
+      }
+    } else {
+      $("." + dieClass).removeClass("clickedDie");
+    }
+
+    this.setState({
+      players: players,
+      winner: this.getWinnersText(players)
+    });
+
+
+  },
 
   render: function() {
-    return <div>{([
-      <Jumbotron key="jumbotron" onClick={this.addNewPlayer} />,
-      // <TempName tempName={this.state.players} />,
-      <FirstPart key="firstPart" chosenColumnSize={this.state.chosenColumnSize} players={this.state.players}
-        onDieClick={this.onDieClick} onDieMouseOver={this.onDieMouseOver} onDieMouseOut={this.onDieMouseOut} />
-    ])}</div>
+    var players         = JSON.parse(JSON.stringify(this.state.players));
+    var winner          = this.state.winner;
+    var grandWinner     = this.state.grandWinner;
+    var matchWinnerKeys = this.state.matchWinnerKeys.length > 0;
+    var onClick         = this.onDieClick;
+    var removePlayer    = this.removePlayer;
+
+    return (
+      <div>
+        <Jumbotron key="jumbotron" winner={winner} grandWinner={grandWinner}
+          onClick={this.addNewPlayer} matchWinnerKeys={matchWinnerKeys} />
+        <NewMatchAlert onClick={this.setNewMatch} />
+        <Points players={players} onClick={onClick} removePlayer={removePlayer} />
+      </div>
+    );
   }
 });
 

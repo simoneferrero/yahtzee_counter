@@ -1,26 +1,29 @@
-var React = require('react');
+var React     = require('react');
+var AddPlayer = require('./AddPlayer');
+var NewMatch  = require('./NewMatch');
 
 var Jumbotron = React.createClass({
   render: function() {
-    var jumbotron = (
+    var winner          = this.props.winner;
+    var grandWinner     = this.props.grandWinner;
+    var onClick         = this.props.onClick;
+    var matchWinnerKeys = this.props.matchWinnerKeys;
+
+    var jumbotron       = (
       <div className="jumbotron">
         <div className="container">
           <div className="row">
-            <h1 className="col-xs-12 text-center">Yahtzee!!<br /><small>The easy way to count Yahtzee points</small></h1>
-          </div>
-        </div>
-        <form className="form-inline">
-          <div className="container">
-            <div className="row">
-              <label htmlFor="addNewPlayer"
-                className="col-xs-2">Add new player:</label>
-              <input id="newPlayer" type="text" name="newPlayer" placeholder="Player name"
-                className="col-xs-5 col-xs-offset-1" />
-              <button id="addMe" onClick={this.props.onClick}
-                 className="btn btn-primary col-xs-3 col-xs-offset-1">Add me!</button>
+            <div className="col-xs-8">
+              <div className="title">Yahtzee Counter</div>
+              <div className="winner">{winner}</div>
+              <div className="winner">{grandWinner}</div>
+            </div>
+            <div className="col-xs-4">
+              <AddPlayer onClick={onClick} />
+              <NewMatch matchWinnerKeys={matchWinnerKeys} />
             </div>
           </div>
-        </form>
+        </div>
       </div>
     );
 
