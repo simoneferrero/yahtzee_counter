@@ -105,6 +105,8 @@ var App = React.createClass({
       };
     }
 
+    $(".slider").val(-1);
+
     return resetPlayers;
   },
 
