@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "uglify": "install uglify-js -g",
     "build": "webpack --config webpack-production.config.js -p",
     "start": "webpack-dev-server --config webpack-development.config.js"
   },
